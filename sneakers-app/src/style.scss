@@ -1,0 +1,32 @@
+@import './util/normalize/normalize';
+@import './scss/fonts';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Intro';
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: darkslategrey;
+  color: white;
+  text-transform: uppercase;
+}
