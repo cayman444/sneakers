@@ -1,32 +1,19 @@
-@import './util/normalize/normalize';
+@import './util/normalize';
 @import './scss/fonts';
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  padding: 0;
-}
+@import './scss/vars';
+@import './scss/buttons';
 
 body {
   font-family: 'Intro';
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: darkslategrey;
-  color: white;
-  text-transform: uppercase;
+  background-color: var(--bg-color);
+  color: #fff;
 }
+
+.container {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+@import './scss/header';
+@import './scss/hero';

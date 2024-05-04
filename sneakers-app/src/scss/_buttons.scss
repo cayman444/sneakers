@@ -1,0 +1,20 @@
+.button {
+  width: 255px;
+  height: 60px;
+  color: #fff;
+  font-weight: 300;
+  background-color: var(--accent-color);
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  @media (any-hover: hover) {
+    &:hover {
+      background-color: red;
+    }
+  }
+
+  &:active {
+    background-color: #8c2828;
+  }
+}
