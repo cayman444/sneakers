@@ -1,5 +1,5 @@
 .button {
-  width: 255px;
+  max-width: 255px;
   height: 60px;
   color: #fff;
   font-weight: 300;
@@ -16,5 +16,22 @@
 
   &:active {
     background-color: #8c2828;
+  }
+}
+
+.button-dark {
+  border: 1px solid var(--sec-bg-color);
+  background: var(--text-color);
+  color: #fff;
+  border-radius: 4px;
+  max-width: 239px;
+  font-weight: 300;
+  height: 60px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  @media (any-hover: hover) {
+    &:hover {
+      background: #31343c;
+    }
   }
 }

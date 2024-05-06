@@ -46,6 +46,70 @@
         <div class="hero__background-text">SneakPnz</div>
       </div>
     </section>
+    <section class="catalog">
+      <div class="container">
+        <h2 class="catalog__title">Каталог</h2>
+        <div class="catalog__inner">
+          <div class="catalog__item catalog-filter">
+            <div class="catalog-filter__item filter-item">
+              <div class="filter-item__title">Подбор<br>по параметрам</div>
+              <div class="filter-item__content">
+                <div class="filter-item__price">Цена, руб</div>
+                <div class="filter-item__inputs item-inputs">
+                  <input type="number" class="filter-item__input item-inputs__min" min="0" max="25768"
+                    placeholder="1850">
+                  <span class="item-inputs__decor"></span>
+                  <input type="number" class="filter-item__input item-inputs__max" min="0" max="25768"
+                    placeholder="25768">
+                </div>
+              </div>
+              <div class="filter-item__content">
+                <div class="filter-item__gender">Пол</div>
+                <div class="filter-item__checkbox item-checkbox">
+                  <label class="item-checkbox__label">
+                    <input type="checkbox" class="item-checkbox__input">
+                    <span class="item-checkbox__real"></span>
+                    <span class="item-checkbox__text">мужской</span>
+                  </label>
+                  <label class="item-checkbox__label">
+                    <input type="checkbox" class="item-checkbox__input active">
+                    <span class="item-checkbox__real"></span>
+                    <span class="item-checkbox__text">женский</span>
+                  </label>
+                </div>
+              </div>
+              <div class="filter-item__content">
+                <div class="filter-item__size">Размер</div>
+                <table class="filter-item__table">
+                  <tbody>
+                    <tr>
+                      <td>35</td>
+                      <td>36</td>
+                      <td>37</td>
+                    </tr>
+                    <tr>
+                      <td>38</td>
+                      <td>39</td>
+                      <td>40</td>
+                    </tr>
+                    <tr>
+                      <td>41</td>
+                      <td>42</td>
+                      <td>43</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button class="filter-item__btn button-dark">Применить</button>
+              <div class="filter-item__container">
+                <button class="filter-item__reset">сбросить</button>
+              </div>
+            </div>
+          </div>
+          <div class="catalog__item catalog-products"></div>
+        </div>
+      </div>
+    </section>
   </main>
 </body>
 
