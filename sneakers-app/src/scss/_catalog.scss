@@ -10,6 +10,7 @@
   &__inner {
     display: grid;
     grid-template-columns: 280px 1fr;
+    gap: 20px;
   }
 
   &__item {
@@ -57,6 +58,7 @@
     border: none;
     background-color: var(--sec-bg-color);
     appearance: textfield;
+    transition: all 0.3s ease 0s;
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
       display: none;
@@ -93,8 +95,10 @@
       padding: 20px;
       transition: all 0.3s ease 0s;
       cursor: pointer;
-      &:hover {
-        background-color: var(--small-text-color);
+      @media (any-hover: hover) {
+        &:hover {
+          background-color: var(--small-text-color);
+        }
       }
     }
   }
@@ -119,6 +123,7 @@
     }
   }
 }
+
 .item-inputs {
   &__min {
   }

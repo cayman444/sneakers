@@ -1,3 +1,4 @@
+import './util/nouislider';
 import './index.html';
 import './style.scss';
 import HeaderView from './view/header/header-view';

@@ -2,10 +2,10 @@
 @import './scss/fonts';
 @import './scss/vars';
 @import './scss/buttons';
+@import './scss/nouislider';
 
 body {
   font-family: 'Intro';
-  background-color: var(--bg-color);
   color: #fff;
 }
 
@@ -18,3 +18,4 @@ body {
 @import './scss/header';
 @import './scss/hero';
 @import './scss/catalog';
+@import './scss/catalog-products';
