@@ -15,10 +15,10 @@
         <h1 class="header__logo">SneakPnz</h1>
         <nav class="header__nav">
           <ul class="header__list">
-            <li><a href="" class="header__link">Каталог</a></li>
-            <li><a href="" class="header__link">О нас</a></li>
-            <li><a href="" class="header__link">Частые вопросы</a></li>
-            <li><a href="" class="header__link">Контакты</a></li>
+            <li><a href="#catalog" class="header__link">Каталог</a></li>
+            <li><a href="#about" class="header__link">О нас</a></li>
+            <li><a href="#questions" class="header__link">Частые вопросы</a></li>
+            <li><a href="#contacts" class="header__link">Контакты</a></li>
           </ul>
         </nav>
         <div class="header__card">
@@ -46,7 +46,7 @@
         <div class="hero__background-text">SneakPnz</div>
       </div>
     </section>
-    <section class="catalog">
+    <section id="catalog" class="catalog">
       <div class="container">
         <h2 class="catalog__title">Каталог</h2>
         <div class="catalog__inner">
@@ -159,14 +159,14 @@
                 </div>
               </div>
               <div class="products-item__container">
-                <div class="products-item__btn button">Показать еще</div>
+                <button class="products-item__btn button">Показать еще</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <section class="about">
+    <section id="about" class="about">
       <div class="about__decor">
         <img src="./img/about/figure.svg" alt="">
       </div>
@@ -193,7 +193,7 @@
         </div>
       </div>
     </section>
-    <section class="questions">
+    <section id="questions" class="questions">
       <div class="container">
         <h2 class="questions__title">Часто задаваемые вопросы</h2>
         <div class="questions__inner">
@@ -218,7 +218,7 @@
         </div>
       </div>
     </section>
-    <section class="contacts">
+    <section id="contacts" class="contacts">
       <div class="container">
         <div class="contacts__inner">
           <div class="contacts__item">
@@ -226,17 +226,23 @@
             <div class="contacts__item-content contacts-content">
               <div class="contacts-content__inner">
                 <div class="contacts-content__item content-item">
-                  <div class="content-item__title">Главный офис</div>
+                  <div class="content-item__about">
+                    <div class="content-item__title">Главный офис</div>
+                    <div class="content-item__tooltip">
+                      <img src="./img/contacts/tooltip.svg" alt="">
+                    </div>
+                  </div>
+
                   <div class="content-item__contacts">
                     <div class="content-item__tel">+7 800 789 89 89</div>
-                    <div class="content-item__place">г. Санкт-Петербург, Комсомольская, 43 к1</div>
+                    <div class="content-item__place">г. Пенза, Володарского, 6</div>
                   </div>
                 </div>
                 <div class="contacts-content__item content-item">
                   <div class="content-item__title">отдел продаж</div>
                   <div class="content-item__contacts">
                     <div class="content-item__tel">+7 800 789 89 89</div>
-                    <div class="content-item__place">г. Санкт-Петербург, Комсомольская, 43 к1</div>
+                    <div class="content-item__place">г. Пенза, Володарского, 6</div>
                   </div>
                 </div>
                 <div class="contacts-content__item content-item">
@@ -268,12 +274,14 @@
       <div class="container">
         <div class="socials__inner">
           <div class="socials__item">
-            <form action="" class="socials__item-form social-form">
-              <div class="social-form__title">Есть вопросы?</div>
+            <form action="#" class="socials__item-form social-form">
+              <div class="social-form__title">Есть вопрос или предложение?</div>
               <div class="social-form__text">Заполните форму и наш менеджер свяжется с вами</div>
               <div class="social-form__inputs">
                 <input type="text" name="name" class="social-form__input" placeholder="Ваше имя"></input>
-                <input type="text" name="phone" class="social-form__input" placeholder="Номер телефона"></input>
+                <input type="email" name="email" class="social-form__input" placeholder="Ваш e-mail"></input>
+                <textarea name="text" class="social-form__input social-form__textarea"
+                  placeholder="Ваше сообщение"></textarea>
                 <button type="submit" class="social-form__button button">Отправить</button>
               </div>
             </form>
@@ -306,6 +314,19 @@
       </div>
     </section>
   </main>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <h2 class="footer__logo">SneakPnz</h2>
+        <ul class="footer__list">
+          <li><a href="#catalog" class="footer__link">Каталог</a></li>
+          <li><a href="#about" class="footer__link">О нас</a></li>
+          <li><a href="#questions" class="footer__link">Частые вопросы</a></li>
+          <li><a href="#contacts" class="footer__link">Контакты</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
 </body>
 
 </html>

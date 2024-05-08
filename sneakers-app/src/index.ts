@@ -1,5 +1,6 @@
 import './util/nouislider';
 import './util/accordion';
+import './util/tooltip';
 import './index.html';
 import './style.scss';
 import HeaderView from './view/header/header-view';

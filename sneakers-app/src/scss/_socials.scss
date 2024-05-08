@@ -8,6 +8,9 @@
   }
 
   &__item {
+    &:last-child {
+      align-self: baseline;
+    }
   }
 
   &__item-form {
@@ -20,7 +23,7 @@
 .social-form {
   text-align: center;
   background-color: var(--bg-color);
-  padding: 40px 20px 47px;
+  padding: 40px 20px;
   border-radius: 4px;
   &__title {
     font-weight: 700;
@@ -38,7 +41,7 @@
   &__inputs {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
   }
 
   &__input {
@@ -52,8 +55,14 @@
     &::placeholder {
       font-weight: 300;
       line-height: 22px;
-      color: var(--text-color);
+      color: var(--gray-color);
     }
+  }
+
+  &__textarea {
+    min-height: 120px;
+    resize: none;
+    padding: 20px;
   }
 
   &__button {
