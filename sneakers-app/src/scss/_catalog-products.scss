@@ -33,8 +33,8 @@
   position: relative;
   overflow: hidden;
   border-radius: 4px;
-  cursor: default;
   @media (any-hover: hover) {
+    cursor: default;
     &:hover {
       .card-img__background {
         pointer-events: all;

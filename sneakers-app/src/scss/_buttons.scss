@@ -10,6 +10,7 @@
   border-radius: 10px;
   border: none;
   cursor: pointer;
+  z-index: 1;
   transition: all 0.3s ease 0s;
   @media (any-hover: hover) {
     &:hover {

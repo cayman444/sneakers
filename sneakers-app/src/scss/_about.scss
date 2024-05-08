@@ -5,6 +5,7 @@
     position: absolute;
     left: 0;
     top: 0;
+    pointer-events: none;
     img {
       vertical-align: top;
       max-width: 100%;
@@ -33,13 +34,11 @@
 }
 
 .about-content {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin-top: 60px;
   margin-left: 4px;
-  z-index: 1;
   &__title {
     font-weight: 700;
     font-size: 30px;
