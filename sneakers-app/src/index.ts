@@ -3,19 +3,14 @@ import './util/accordion';
 import './util/tooltip';
 import './index.html';
 import './style.scss';
-import HeaderView from './view/header/header-view';
-
-export default class App {
-  constructor() {
-    this.createView();
-  }
-
-  createView() {
-    const headerView = new HeaderView();
-
-    document.body.append(headerView.getHtmlElement());
-  }
-}
+import Products from './components/products';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-// const app = new App();
+const products = new Products();
+
+// class App {
+
+//   constructor() {
+//     this.products = new Products();
+//   }
+// }

@@ -8,9 +8,6 @@
   }
 
   &__item {
-    &:last-child {
-      align-self: baseline;
-    }
   }
 
   &__item-form {
@@ -57,12 +54,6 @@
       line-height: 22px;
       color: var(--gray-color);
     }
-  }
-
-  &__textarea {
-    min-height: 120px;
-    resize: none;
-    padding: 20px;
   }
 
   &__button {

@@ -1,10 +1,15 @@
 import { ElementParams } from './interface';
 
 export default class ElementCreator {
-  element: HTMLElement | null = null;
+  private element: HTMLElement | null = null;
 
-  constructor(param: ElementParams) {
+  constructor(tag: string, text: string, classNames: string[]) {
     this.element = null;
+    const param = {
+      tag,
+      classNames,
+      textContent: text,
+    };
     this.createElement(param);
   }
 

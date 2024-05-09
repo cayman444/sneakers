@@ -2,6 +2,7 @@ const path = require('path');
 const EslintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const postcssPresetEnv = require('postcss-preset-env');
 
 const mode = process.env.NODE_ENV || 'development';
@@ -25,7 +26,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].[contenthash].js',
-    assetModuleFilename: 'assets/[hash][ext]',
+    assetModuleFilename: 'assets/[name][ext]',
     clean: true,
   },
   plugins: [
@@ -35,6 +36,14 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash:8].css',
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: 'src/data/data.json', to: 'data/data.json' },
+        { from: 'src/data/images', to: 'data/images' },
+        { from: 'src/img/catalog/show.svg', to: 'assets' },
+        { from: 'src/img/catalog/card.svg', to: 'assets' },
+      ],
     }),
   ],
   module: {
