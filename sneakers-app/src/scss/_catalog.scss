@@ -91,6 +91,7 @@
     border: 1px solid var(--small-text-color);
     border-collapse: collapse;
     text-align: center;
+    user-select: none;
     td {
       border: 1px solid var(--small-text-color);
       padding: 20px;
@@ -98,8 +99,11 @@
       cursor: pointer;
       @media (any-hover: hover) {
         &:hover {
-          background-color: var(--small-text-color);
+          background-color: rgb(219, 187, 169, 0.5);
         }
+      }
+      &.active {
+        background-color: rgb(219, 187, 169, 0.5);
       }
     }
   }

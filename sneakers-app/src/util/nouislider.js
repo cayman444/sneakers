@@ -4,6 +4,7 @@ import 'nouislider/dist/nouislider.css';
 const slider = document.querySelector('.filter-inputs__slider');
 const inputMin = document.querySelector('.item-inputs__min');
 const inputMax = document.querySelector('.item-inputs__max');
+const btnReset = document.querySelector('.filter-item__reset');
 const inputsMinMax = [inputMin, inputMax];
 const price = {
   min: 1850,
@@ -31,4 +32,8 @@ inputMin.addEventListener('change', (e) => {
 
 inputMax.addEventListener('change', (e) => {
   slider.noUiSlider.set([null, e.target.value]);
+});
+
+btnReset.addEventListener('click', () => {
+  slider.noUiSlider.set([price.min, price.max]);
 });

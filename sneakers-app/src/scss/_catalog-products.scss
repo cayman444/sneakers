@@ -2,6 +2,7 @@
   &__cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    color: var(--text-color);
     gap: 20px;
     margin-bottom: 40px;
   }
@@ -17,12 +18,17 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  color: var(--text-color);
+
   cursor: pointer;
   &__img {
   }
 
+  &__text {
+  }
   &__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__price {
