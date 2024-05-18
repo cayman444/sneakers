@@ -1,4 +1,6 @@
+import BrowserDetector from 'browser-dtector';
 import { ElementProduct, Options } from '../util/interface';
+import Modal from './modal';
 
 export default class Products {
   private products: ElementProduct[] | null = null;
@@ -52,6 +54,8 @@ export default class Products {
     filterBtn?.addEventListener('click', () => this.filter());
 
     resetBtn?.addEventListener('click', () => this.resetFilter());
+
+    container.addEventListener('click', (e) => this.transitionTo(e));
   }
 
   private createProduct(product: ElementProduct) {
@@ -59,17 +63,19 @@ export default class Products {
       <div id="${product.id}" class="products-item__card item-card">
         <div class="item-card__img card-img">
           <div class="card-img__background">
-            <div class="card-img__decor">
+            <div class="card-img__decor about-card">
               <img src="assets/show.svg" alt="">
             </div>
-            <div class="card-img__decor">
+            <div class="card-img__decor shop-cart">
               <img src="assets/card.svg" alt="">
             </div>
           </div>
           <img class="card-img__main" src="${product.mainImage}" alt="">
         </div>
-        <div class="item-card__title">${product.title}</div>
-        <div class="item-card__price">${product.price} <span>₽</span></div>
+        <div class="item-card__content">
+          <div class="item-card__title">${product.title}</div>
+          <div class="item-card__price">${product.price} <span>₽</span></div>
+        </div>
       </div>
     `;
   }
@@ -180,6 +186,26 @@ export default class Products {
 
       button.addEventListener('click', (e) => this.showMore(e));
       buttonMore.append(button);
+    }
+  }
+
+  private transitionTo(e: MouseEvent) {
+    const browser = new BrowserDetector(window.navigator.userAgent);
+    const el = <HTMLElement>e.target;
+    const currentId = el.closest('.item-card')?.id;
+
+    if (el.closest('.item-card') && browser.parseUserAgent().isMobile) {
+      this.renderModal(currentId || '');
+    } else if (el.closest('.about-card') || el.closest('.item-card__content')) {
+      this.renderModal(currentId || '');
+    }
+  }
+
+  private renderModal(id: string) {
+    if (id) {
+      const currentProduct = <ElementProduct>this.products?.find((product) => product.id.toString() === id);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const modal = new Modal(currentProduct);
     }
   }
 }

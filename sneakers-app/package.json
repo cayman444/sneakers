@@ -47,7 +47,9 @@
     "webpack-dev-server": "^5.0.2"
   },
   "dependencies": {
+    "browser-dtector": "^4.1.0",
     "nouislider": "^15.7.1",
+    "swiper": "^11.1.3",
     "tippy.js": "^6.3.7"
   }
 }

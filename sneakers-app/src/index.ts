@@ -1,6 +1,7 @@
 import './util/nouislider';
 import './util/accordion';
 import './util/tooltip';
+import './util/slider-cart';
 import './index.html';
 import './style.scss';
 import Products from './components/products';

@@ -1,0 +1,271 @@
+.modal {
+  opacity: 0;
+  visibility: hidden;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  padding: 30px;
+  transition: all 0.3s ease 0s;
+  background: rgba(68, 75, 88, 0.7);
+  z-index: 2;
+  &[data-active='true'] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__content {
+    padding: 40px;
+    background-color: #fff;
+  }
+}
+
+.modal-about {
+  max-width: 1140px;
+  width: 100%;
+  color: var(--text-color);
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__item {
+    &:last-child {
+      grid-row: 2;
+      grid-column: 1 / 3;
+    }
+  }
+
+  &__slider {
+  }
+
+  &__title {
+    font-weight: 300;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  &__text {
+    font-weight: 300;
+    line-height: 22px;
+    max-width: 430px;
+  }
+
+  &__info {
+  }
+}
+.about-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  &__content {
+    display: flex;
+    gap: 20px;
+    &:last-child {
+      align-items: center;
+    }
+  }
+  &__top {
+    flex: 0 1 520px;
+    height: 460px;
+    min-width: 0;
+    overflow: hidden;
+    img {
+      max-width: 100%;
+      height: 100%;
+      width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      vertical-align: top;
+    }
+  }
+
+  &__bottom {
+    flex: 0 1 520px;
+    height: 100px;
+
+    img {
+      max-width: 100%;
+      height: 100%;
+      width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      vertical-align: top;
+    }
+  }
+  &__info {
+    flex: 0 1 430px;
+  }
+}
+
+.slider-bottom {
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  &__slide {
+    flex: 1 1 auto;
+    width: auto !important;
+    cursor: pointer;
+    img {
+      border-radius: 4px;
+      border: 2px solid transparent;
+    }
+  }
+}
+.swiper-slide-thumb-active {
+  img {
+    border: 2px solid var(--accent-color);
+  }
+}
+
+.about-info {
+  flex: 0 1 430px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  &__top {
+    display: flex;
+    align-items: center;
+    gap: 45px;
+    font-weight: 300;
+    color: var(--gray-color);
+  }
+
+  &__code {
+  }
+
+  &__stock {
+    span {
+      color: var(--text-color);
+    }
+  }
+
+  &__main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__title {
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 34px;
+  }
+
+  &__ratting {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  &__label {
+  }
+  &__input {
+    display: none;
+  }
+
+  &__star {
+  }
+
+  &__select {
+    font-weight: 300;
+  }
+
+  &__sizes {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  &__size {
+    border: 2px solid var(--gray-color);
+    border-radius: 4px;
+    padding: 10px 26px;
+    background-color: transparent;
+    cursor: pointer;
+    &.active {
+      border: 2px solid var(--accent-color);
+    }
+  }
+
+  &__price {
+    flex: 1 1 auto;
+    margin-top: 15px;
+    font-weight: 700;
+    font-size: 30px;
+  }
+
+  &__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+
+  &__btn {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    font-weight: 300;
+    font-size: 14px;
+    color: var(--gray-color);
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      &::before {
+        content: '';
+        width: 15px;
+        height: 12px;
+        background: url(./img/modal/check-mark.svg) center no-repeat;
+        background-size: cover;
+      }
+    }
+  }
+}
+
+.about-description {
+  display: flex;
+  gap: 20px;
+  font-weight: 300;
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    &:first-child {
+      flex: 0 1 520px;
+    }
+    &:last-child {
+      flex: 0 1 430px;
+    }
+  }
+  &__title {
+    font-size: 24px;
+    font-weight: inherit;
+  }
+  &__text {
+    line-height: 22px;
+    max-width: 430px;
+  }
+  &__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

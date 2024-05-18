@@ -29,5 +29,6 @@ module.exports = {
         ts: 'never',
       },
     ],
+    'import/no-unresolved': 'off',
   },
 };

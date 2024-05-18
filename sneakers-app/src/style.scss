@@ -12,6 +12,9 @@ html {
 body {
   font-family: 'Intro';
   color: #fff;
+  &[data-hidden='true'] {
+    overflow: hidden;
+  }
 }
 
 .container {
@@ -29,3 +32,4 @@ body {
 @import './scss/contacts';
 @import './scss/socials';
 @import './scss/footer';
+@import './scss/modal';
