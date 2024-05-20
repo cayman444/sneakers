@@ -82,7 +82,7 @@
     cursor: pointer;
     transition: all 0.3s ease 0s;
     @media (any-hover: hover) {
-      &:hover {
+      &:not(.shop-cart.active):hover {
         background-color: var(--small-text-color);
       }
     }
@@ -92,6 +92,12 @@
       object-fit: contain;
     }
   }
+
+  .shop-cart.active {
+    opacity: 0.5;
+    cursor: default;
+  }
+
   &__main {
     max-width: 100%;
     object-fit: cover;

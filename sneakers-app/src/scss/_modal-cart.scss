@@ -1,0 +1,120 @@
+.modal-cart {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  top: 65px;
+  max-width: 480px;
+  width: 100%;
+  padding: 0;
+  transition: all 0.3s ease 0s;
+  &[data-active='true'] {
+    opacity: 1;
+    visibility: visible;
+  }
+  &__inner {
+    font-weight: 300;
+    line-height: 143%;
+    color: var(--text-color);
+  }
+
+  &__product {
+  }
+
+  &__total {
+  }
+}
+.cart-product {
+  &__items {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    max-height: 323px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    @media (any-hover: hover) {
+      &:hover {
+        background: rgba(204, 217, 242, 0.2);
+      }
+    }
+  }
+
+  &__img {
+    flex: 0 1 100px;
+    height: 57px;
+    img {
+      max-width: 100%;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      vertical-align: top;
+    }
+  }
+
+  &__info {
+    flex: 1 1 auto;
+  }
+
+  &__title {
+    max-width: 268px;
+    margin-bottom: 12px;
+  }
+
+  &__price {
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  &__delete {
+    flex: 0 0 20px;
+    height: 20px;
+    cursor: pointer;
+    svg path {
+      transition: all 0.3s ease 0s;
+    }
+    svg {
+      max-width: 100%;
+      object-fit: cover;
+      vertical-align: top;
+    }
+    @media (any-hover: hover) {
+      &:hover {
+        svg path {
+          fill-opacity: 1;
+        }
+      }
+    }
+  }
+}
+.cart-total {
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 -4px 10px 0 rgba(0, 13, 84, 0.1);
+    padding: 20px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    span {
+      font-weight: 700;
+      font-size: 20px;
+    }
+  }
+
+  &__btn {
+    width: 244px;
+    height: 50px;
+  }
+}

@@ -6,7 +6,7 @@ import { ElementProduct } from '../util/interface';
 
 const cache = new Map();
 
-export default class Modal {
+export default class ModalProduct {
   product: ElementProduct;
 
   currentModal: HTMLElement | null = null;
@@ -17,29 +17,33 @@ export default class Modal {
   }
 
   private renderModal() {
+    const wrapper = <HTMLElement>document.querySelector('.modal');
     if (cache.has(this.product.id)) {
-      document.body.insertAdjacentHTML('beforeend', cache.get(this.product.id));
+      wrapper!.insertAdjacentHTML('beforeend', cache.get(this.product.id));
     } else {
       const modal = this.markingModal();
-      document.body.insertAdjacentHTML('beforeend', modal);
+      wrapper!.insertAdjacentHTML('beforeend', modal);
 
       cache.set(this.product.id, modal);
     }
 
     this.swiperJoin();
+    wrapper.dataset.active = 'true';
     document.body.dataset.hidden = 'true';
 
-    this.currentModal = <HTMLElement>document.querySelector('.modal');
+    this.currentModal = wrapper;
     const sizes = this.currentModal.querySelector('.about-info__sizes');
 
-    this.currentModal.addEventListener('click', this.clickField);
+    this.currentModal.addEventListener('click', (e) => this.clickField(e));
     sizes?.addEventListener('click', this.clickSize);
   }
 
   private clickField(e: MouseEvent) {
     const el = <HTMLElement>e.target;
     if (el.classList.contains('modal')) {
-      el.remove();
+      const modal = this.currentModal;
+      modal!.dataset.active = 'false';
+      modal!.innerHTML = '';
       document.body.dataset.hidden = 'false';
     }
   }
@@ -129,7 +133,6 @@ export default class Modal {
   // eslint-disable-next-line max-lines-per-function
   private markingModal() {
     return `
-    <div class="modal" data-active='true'>
     <div class="modal__content modal-about">
       <div class="modal-about__inner">
         <div class="modal-about__item">
@@ -230,7 +233,6 @@ export default class Modal {
         </div>
       </div>
     </div>
-  </div>
     `;
   }
 }

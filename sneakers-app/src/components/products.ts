@@ -1,6 +1,8 @@
 import BrowserDetector from 'browser-dtector';
 import { ElementProduct, Options } from '../util/interface';
-import Modal from './modal';
+import ModalProduct from './modal-product';
+import ModalCartRender from './modalCartRender';
+import ModalCartInner from './modalCartInner';
 
 export default class Products {
   private products: ElementProduct[] | null = null;
@@ -9,10 +11,11 @@ export default class Products {
 
   private filterItem: HTMLElement | null = null;
 
-  private currentOptions: Options | null = null;
+  private wrapperModal: HTMLElement | null = null;
 
   constructor() {
     this.getProducts();
+    this.cartCounter();
   }
 
   private async getProducts() {
@@ -28,6 +31,9 @@ export default class Products {
 
   private renderProduct(products: ElementProduct[]) {
     this.products = products;
+    this.cartItems();
+    this.wrapperModal = <HTMLElement>document.querySelector('.modal');
+    const cart = document.querySelector('.header__card');
     const container = <HTMLElement>document.querySelector('.products-item__cards');
     const filterItem = <HTMLElement>document.querySelector('.filter-item');
     const filterBtn = filterItem.querySelector('.filter-item__btn');
@@ -56,6 +62,20 @@ export default class Products {
     resetBtn?.addEventListener('click', () => this.resetFilter());
 
     container.addEventListener('click', (e) => this.transitionTo(e));
+
+    cart?.addEventListener('click', (e) => this.openCart(e));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private openCart(e: Event) {
+    const currentEl = <HTMLElement>e.target;
+    const modalCart = <HTMLElement>currentEl.closest('.header__card')!.nextElementSibling;
+    modalCart.dataset.active = 'true';
+    this.wrapperModal!.dataset.active = 'true';
+    document.body.dataset.hidden = 'true';
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const renderInCartModal = new ModalCartInner(this.products, modalCart);
   }
 
   private createProduct(product: ElementProduct) {
@@ -66,7 +86,7 @@ export default class Products {
             <div class="card-img__decor about-card">
               <img src="assets/show.svg" alt="">
             </div>
-            <div class="card-img__decor shop-cart">
+            <div class="card-img__decor shop-cart ${this.checkProductInCart(product.id)}">
               <img src="assets/card.svg" alt="">
             </div>
           </div>
@@ -78,6 +98,16 @@ export default class Products {
         </div>
       </div>
     `;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private checkProductInCart(id: number): string {
+    const productsInCar = localStorage.getItem('productInCart');
+    if (productsInCar) {
+      const products = JSON.parse(productsInCar);
+      return products.some((product: { id: string }) => product.id === id.toString()) ? 'active' : '';
+    }
+    return '';
   }
 
   private showMore(e: Event) {
@@ -119,7 +149,6 @@ export default class Products {
 
     const options = { min: min.value, max: max.value, gender: totalGender, sizes: selectedSize };
 
-    this.currentOptions = options;
     this.renderFilterProduct(options);
   }
 
@@ -195,17 +224,60 @@ export default class Products {
     const currentId = el.closest('.item-card')?.id;
 
     if (el.closest('.item-card') && browser.parseUserAgent().isMobile) {
-      this.renderModal(currentId || '');
+      this.renderInModal(currentId || '', 'product');
     } else if (el.closest('.about-card') || el.closest('.item-card__content')) {
-      this.renderModal(currentId || '');
+      this.renderInModal(currentId || '', 'product');
+    } else if (el.closest('.shop-cart') && !el.closest('.shop-cart')!.classList.contains('active')) {
+      el.closest('.shop-cart')?.classList.add('active');
+      this.renderInModal(currentId || '', 'cart');
     }
   }
 
-  private renderModal(id: string) {
+  private renderInModal(id: string, where: string) {
     if (id) {
       const currentProduct = <ElementProduct>this.products?.find((product) => product.id.toString() === id);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const modal = new Modal(currentProduct);
+      if (where === 'product') {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const modal = new ModalProduct(currentProduct);
+      } else if (where === 'cart') {
+        const productInCart = localStorage.getItem('productInCart');
+        let product;
+        if (productInCart) {
+          product = JSON.parse(productInCart);
+          product.push({ id });
+        } else {
+          product = [{ id }];
+        }
+
+        localStorage.setItem('productInCart', JSON.stringify(product));
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const modal = new ModalCartRender(currentProduct);
+      }
+    }
+  }
+
+  private cartCounter() {
+    const totalInCart = localStorage.getItem('totalInCart');
+    const cartCounter = <HTMLElement>document.querySelector('.header__card-decor');
+    if (totalInCart) {
+      cartCounter.textContent = totalInCart;
+    }
+  }
+
+  private cartItems() {
+    const productCart = localStorage.getItem('productInCart');
+    if (productCart) {
+      const totalProducts = this.products?.filter((product: ElementProduct) =>
+        Object.values(productCart).includes(product.id.toString())
+      );
+
+      const modalCartItems = document?.querySelector('.cart-product__items');
+
+      const total: string[] = [];
+      totalProducts?.forEach((product) => {
+        total.push(ModalCartRender.createModalCartItem(product));
+      });
+      modalCartItems?.insertAdjacentHTML('beforeend', total.join(''));
     }
   }
 }
