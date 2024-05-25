@@ -12,6 +12,8 @@ export default class ModalCartRender {
     const headerContainer = document.querySelector('.header__container');
     const modalCart = headerContainer?.querySelector('.modal-cart');
     const modalCartItems = modalCart?.querySelector('.cart-product__items');
+    const noProduct = modalCart?.querySelector('.no-product');
+    noProduct?.remove();
     const counter = <HTMLElement>headerContainer?.querySelector('.header__card-decor');
     counter.textContent = this.addNumber(counter.textContent || '');
 
@@ -20,7 +22,7 @@ export default class ModalCartRender {
 
   static createModalCartItem(product: ElementProduct) {
     return `
-    <div class="cart-product__item">
+    <div class="cart-product__item" data-id="${product.id}">
       <div class="cart-product__img">
         <img src="${product.mainImage}" alt="">
       </div>

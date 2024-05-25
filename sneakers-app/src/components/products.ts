@@ -34,6 +34,7 @@ export default class Products {
     this.cartItems();
     this.wrapperModal = <HTMLElement>document.querySelector('.modal');
     const cart = document.querySelector('.header__card');
+    const modalCart = document.querySelector('.modal-cart');
     const container = <HTMLElement>document.querySelector('.products-item__cards');
     const filterItem = <HTMLElement>document.querySelector('.filter-item');
     const filterBtn = filterItem.querySelector('.filter-item__btn');
@@ -64,18 +65,19 @@ export default class Products {
     container.addEventListener('click', (e) => this.transitionTo(e));
 
     cart?.addEventListener('click', (e) => this.openCart(e));
+
+    this.wrapperModal.addEventListener('click', (e) => ModalCartInner.checkClick(e, this.products));
+
+    modalCart?.addEventListener('click', (e) => ModalCartInner.checkClick(e, this.products));
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private openCart(e: Event) {
     const currentEl = <HTMLElement>e.target;
-    const modalCart = <HTMLElement>currentEl.closest('.header__card')!.nextElementSibling;
-    modalCart.dataset.active = 'true';
+    const modalCartInner = <HTMLElement>currentEl.closest('.header__card')!.nextElementSibling;
     this.wrapperModal!.dataset.active = 'true';
+    modalCartInner.dataset.active = 'true';
     document.body.dataset.hidden = 'true';
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const renderInCartModal = new ModalCartInner(this.products, modalCart);
+    ModalCartInner.renderTotal();
   }
 
   private createProduct(product: ElementProduct) {
