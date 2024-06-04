@@ -3,6 +3,7 @@ import { ElementProduct, Options } from '../util/interface';
 import ModalProduct from './modal-product';
 import ModalCartRender from './modalCartRender';
 import ModalCartInner from './modalCartInner';
+import ModalOrder from './modal-order';
 
 export default class Products {
   private products: ElementProduct[] | null = null;
@@ -33,6 +34,7 @@ export default class Products {
     this.products = products;
     this.cartItems();
     this.wrapperModal = <HTMLElement>document.querySelector('.modal');
+    const wrapperOrder = document.querySelector('.modal-end');
     const cart = document.querySelector('.header__card');
     const modalCart = document.querySelector('.modal-cart');
     const container = <HTMLElement>document.querySelector('.products-item__cards');
@@ -41,6 +43,7 @@ export default class Products {
     const resetBtn = filterItem.querySelector('.filter-item__reset');
     const filterSizes = filterItem.querySelector('.filter-item__table');
     const button = document.querySelector('.products-item__btn');
+    const orderBtn = document.querySelector('.cart-total__btn');
 
     // eslint-disable-next-line no-magic-numbers
     products.slice(0, 6).forEach((product) => {
@@ -66,6 +69,10 @@ export default class Products {
 
     cart?.addEventListener('click', (e) => this.openCart(e));
 
+    orderBtn?.addEventListener('click', this.openOrder.bind(this));
+
+    wrapperOrder?.addEventListener('click', (e) => ModalOrder.checkClickOrder(e));
+
     this.wrapperModal.addEventListener('click', (e) => ModalCartInner.checkClick(e, this.products));
 
     modalCart?.addEventListener('click', (e) => ModalCartInner.checkClick(e, this.products));
@@ -78,6 +85,14 @@ export default class Products {
     modalCartInner.dataset.active = 'true';
     document.body.dataset.hidden = 'true';
     ModalCartInner.renderTotal();
+  }
+
+  private openOrder() {
+    const modalOrder = <HTMLElement>document.querySelector('.modal-end');
+    document.body.dataset.hidden = 'true';
+    modalOrder.dataset.active = 'true';
+    ModalOrder.renderProducts(this.products);
+    ModalOrder.infoAboutProduct();
   }
 
   private createProduct(product: ElementProduct) {

@@ -43,6 +43,8 @@ module.exports = {
         { from: 'src/data/images', to: 'data/images' },
         { from: 'src/img/catalog/show.svg', to: 'assets' },
         { from: 'src/img/catalog/card.svg', to: 'assets' },
+        { from: 'src/mail.php', to: '' },
+        { from: 'src/phpmailer', to: 'phpmailer' },
       ],
     }),
   ],

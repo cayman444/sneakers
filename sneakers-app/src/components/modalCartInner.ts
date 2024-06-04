@@ -34,10 +34,13 @@ export default class ModalCartInner {
   static checkClick(e: Event, products: ElementProduct[] | null) {
     const currentEl = <HTMLElement>e.target;
     const modalCart = <HTMLElement>document.querySelector('.modal-cart');
-    if (currentEl.classList.contains('modal')) {
-      currentEl.dataset.active = 'false';
+    const wrapper = <HTMLElement>document.querySelector('.modal');
+    if (currentEl.classList.contains('modal') || currentEl.classList.contains('cart-total__btn')) {
+      wrapper.dataset.active = 'false';
       modalCart.dataset.active = 'false';
-      document.body.dataset.hidden = 'false';
+      if (!currentEl.classList.contains('cart-total__btn')) {
+        document.body.dataset.hidden = 'false';
+      }
     } else if (currentEl.closest('.cart-product__delete')) {
       this.deleteProduct(currentEl);
       this.checkField();
@@ -53,7 +56,7 @@ export default class ModalCartInner {
 
   static renderTotal() {
     const priceText = document.querySelector('.cart-total__info span');
-    const productsPriceInCart = <NodeListOf<Element>>document.querySelectorAll('.cart-product__price');
+    const productsPriceInCart = <NodeListOf<Element>>document.querySelectorAll('.priceIn-Cart');
     const total: number = Array.from(productsPriceInCart).reduce((acc, el) => {
       const price = <string>el.textContent?.replace(/\W/gi, '');
       // eslint-disable-next-line no-param-reassign

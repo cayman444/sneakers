@@ -246,8 +246,8 @@
               <div class="social-form__title">Есть вопрос или предложение?</div>
               <div class="social-form__text">Заполните форму и наш менеджер свяжется с вами</div>
               <div class="social-form__inputs">
-                <input type="text" name="name" class="social-form__input" placeholder="Ваше имя"></input>
-                <input type='tel' name="tel" class="social-form__input" placeholder="Номер телефона"></input>
+                <input required type="text" name="name" class="social-form__input" placeholder="Ваше имя"></input>
+                <input required type='tel' name="phone" class="social-form__input" placeholder="Номер телефона"></input>
                 <button type="submit" class="social-form__button button">Отправить</button>
               </div>
             </form>
@@ -294,7 +294,40 @@
     </div>
   </footer>
   <div class="modal" data-active="false"></div>
-</body>
+  <div class="modal modal-end">
+    <div class="modal__content modal-order">
+      <div class="modal-order__inner">
+        <div class="modal-order__top order-top">
+          <div class="order-top__text">Оформление заказа</div>
+          <div class="order-top__number">Заказ 3456 67</div>
+        </div>
+        <div class="modal-order__content order-content">
+          <div class="order-content__inner">
+            <div class="order-content__top">
+              <div class="order-content__total">Товаров в заказе: <span>3 шт</span></div>
+              <div class="order-content__sum">Общая сумма заказа: <span>25 789 ₽</span></div>
+            </div>
+            <div class="order-content__about">
+              <div class="order-content__compound">Состав заказа</div>
+              <div class="order-content__products">
 
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="order-content__bottom">
+          <form action="" class="order-content__form order-form">
+            <div class="order-form__inputs">
+              <input required type="text" name="name" class="order-form__input" placeholder="Ваше имя">
+              <input required type="tel" name="tel" class="order-form__input" placeholder="Номер телефона">
+              <input required type="email" name="email" class="order-form__input" placeholder="E-mail">
+            </div>
+            <button type="submit" class="oreder-form__button button">Оформить заказ</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
 
 </html>

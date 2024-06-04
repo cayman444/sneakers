@@ -1,6 +1,7 @@
 .modal-cart {
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   position: absolute;
   z-index: 3;
   right: 0;
@@ -12,6 +13,7 @@
   &[data-active='true'] {
     opacity: 1;
     visibility: visible;
+    pointer-events: all;
   }
   &__inner {
     font-weight: 300;

@@ -1,34 +1,37 @@
 import { ElementProduct } from '../util/interface';
 
-export default class ModalCartRender {
-  product: ElementProduct;
+export default class ModalOrder {
+  static totalOrderProducts: ElementProduct[];
 
-  constructor(product: ElementProduct) {
-    this.product = product;
-    this.addToCart();
+  static renderProducts(products: ElementProduct[] | null) {
+    const containerOrderProducts = document.querySelector('.order-content__products');
+    containerOrderProducts!.innerHTML = '';
+    let totalProducts = <string>localStorage.getItem('productInCart');
+    totalProducts = JSON.parse(totalProducts).map((product: { [key: string]: string }) => product.id);
+    const productsOrderToRend = products?.filter((product) => {
+      if (totalProducts.includes(product.id.toString())) {
+        return product;
+      }
+      return null;
+    });
+
+    this.totalOrderProducts = <ElementProduct[]>productsOrderToRend;
+
+    productsOrderToRend?.forEach((product) => {
+      const htmlProduct = this.createModalOrderItem(product);
+      containerOrderProducts?.insertAdjacentHTML('beforeend', htmlProduct);
+    });
   }
 
-  private addToCart() {
-    const headerContainer = document.querySelector('.header__container');
-    const modalCart = headerContainer?.querySelector('.modal-cart');
-    const modalCartItems = modalCart?.querySelector('.cart-product__items');
-    const noProduct = modalCart?.querySelector('.no-product');
-    noProduct?.remove();
-    const counter = <HTMLElement>headerContainer?.querySelector('.header__card-decor');
-    counter.textContent = this.addNumber(counter.textContent || '');
-
-    modalCartItems?.insertAdjacentHTML('beforeend', ModalCartRender.createModalCartItem(this.product));
-  }
-
-  static createModalCartItem(product: ElementProduct) {
+  static createModalOrderItem(product: ElementProduct) {
     return `
-    <div class="cart-product__item" data-id="${product.id}">
+    <div class="order-content__product" data-id="${product.id}">
       <div class="cart-product__img">
         <img src="${product.mainImage}" alt="">
       </div>
       <div class="cart-product__info">
         <div class="cart-product__title">${product.title}</div>
-        <div class="cart-product__price priceIn-Cart">${product.price} ₽</div>
+        <div class="cart-product__price">${product.price} ₽</div>
       </div>
       <div class="cart-product__delete">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,10 +53,23 @@ export default class ModalCartRender {
     `;
   }
 
-  private addNumber(count: string): string {
-    const currentCount = (+count + 1).toString();
-    localStorage.setItem('totalInCart', currentCount);
+  static checkClickOrder(e: Event) {
+    const currentEl = <HTMLElement>e.target;
+    const orderModal = <HTMLElement>document.querySelector('.modal-order');
+    const wrapper = <HTMLElement>document.querySelector('.modal-end');
+    if (currentEl.classList.contains('modal-end')) {
+      wrapper.dataset.active = 'false';
+      orderModal.dataset.active = 'false';
+      document.body.dataset.hidden = 'false';
+    }
+  }
 
-    return currentCount;
+  static infoAboutProduct() {
+    const totalOrderCount = document.querySelector('.order-content__total span');
+    const totalOrderSum = document.querySelector('.order-content__sum span');
+    const totalSum = ModalOrder.totalOrderProducts.reduce((acc, el) => acc + +el.price.replace(' ', ''), 0);
+
+    totalOrderCount!.textContent = `${ModalOrder.totalOrderProducts.length.toString()} шт`;
+    totalOrderSum!.textContent = `${totalSum.toString()} ₽`;
   }
 }

@@ -1,4 +1,5 @@
 const accordion = document.querySelector('.question-accordion');
+const accordionOrder = document.querySelector('.order-content__about');
 
 function accordionToggle(e: Event) {
   const target = <HTMLElement>e.target;
@@ -22,5 +23,20 @@ function checkActive() {
   });
 }
 
+function accordionOrderCheck(e: Event) {
+  const target = <HTMLElement>e.target;
+  if (!target.closest('.order-content__compound')) return;
+  const parentOrderAcc = <HTMLElement>target.parentElement;
+  const orderProducts = <HTMLElement>parentOrderAcc.querySelector('.order-content__products');
+  if (parentOrderAcc) {
+    parentOrderAcc.classList.toggle('active');
+    orderProducts.style.maxHeight = parentOrderAcc.classList.contains('active')
+      ? `${orderProducts.scrollHeight}px`
+      : '0';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', checkActive);
 accordion?.addEventListener('click', accordionToggle);
+
+accordionOrder?.addEventListener('click', accordionOrderCheck);
