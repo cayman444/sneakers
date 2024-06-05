@@ -16,11 +16,14 @@ module.exports = {
     'no-console': 'off',
     // eslint-disable-next-line no-magic-numbers
     indent: ['error', 2],
+    'import/no-extraneous-dependencies': 'off',
     'class-methods-use-this': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    'prefer-destructuring': 'off',
+    'no-magic-numbers': 'off',
     '@typescript-eslint/no-explicit-any': 'error',
+    'consistent-return': 'off',
     'max-lines-per-function': ['error', { max: 40, skipBlankLines: true, skipComments: true }],
-    'no-magic-numbers': ['error', { ignore: [-1, 0, 1], ignoreArrayIndexes: true }],
     'import/extensions': [
       'error',
       'ignorePackages',
