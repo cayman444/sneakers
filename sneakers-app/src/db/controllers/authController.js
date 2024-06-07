@@ -1,17 +1,7 @@
+const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { validationResult } = require('express-validator');
-const { secret } = require('./config');
-const User = require('./models/User');
-const Role = require('./models/Role');
-
-const generateAccessToken = (id, roles) => {
-  const payload = {
-    id,
-    roles,
-  };
-  return jwt.sign(payload, secret, { expiresIn: '24h' });
-};
+const User = require('../models/User');
 
 class AuthController {
   async registration(req, res) {
@@ -25,14 +15,13 @@ class AuthController {
       if (candidate) {
         return res.status(400).json({ message: 'Пользователь с таким именем уже существует' });
       }
-      const hashPassword = bcrypt.hashSync(password, 7);
-      const userRole = await Role.findOne({ value: 'User' });
-      const user = new User({ username, password: hashPassword, roles: [userRole.value] });
-      await user.save();
-      res.json({ message: 'Пользователь зарегистрирован' });
+      const hashPassword = bcrypt.hashSync(password, 5);
+      const user = new User({ username, password: hashPassword });
+      user.save();
+      res.json({ message: 'Пользователь создан' });
     } catch (e) {
       console.log(e);
-      res.status(400).json({ message: 'Ошибка с регистрацией' });
+      res.status(400).json({ message: 'Ошибка при регистрации' });
     }
   }
 
@@ -47,18 +36,33 @@ class AuthController {
       if (!validPassword) {
         return res.status(400).json({ message: `Пароль не совпадает` });
       }
-      const token = generateAccessToken(user.id, user.roles);
-      return res.json({ token });
+
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+      res.json({ token, message: 'Вход выполнен успешно' });
     } catch (e) {
       console.log(e);
-      res.status(400).json({ message: 'Ошибка со входом' });
+      res.status(400).json({ message: 'Ошибка при входе' });
+    }
+  }
+
+  async getUser(req, res) {
+    try {
+      const user = await User.findById(req.userId);
+      if (!user) {
+        return res.status(400).json({ message: `Ошибка с получением пользователя` });
+      }
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+      res.json({ token, message: 'Пользователь найден' });
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ message: 'Ошибка с получением пользователя' });
     }
   }
 
   async getUsers(req, res) {
     try {
       const users = await User.find();
-      res.json(users);
+      res.json({ users, message: 'Пользователи найдены' });
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: 'Ошибка с получением пользователей' });

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { ElementProduct } from '../util/interface';
 import ModalProduct from './modal-product';
 
@@ -22,12 +23,16 @@ export default class ModalCartInner {
 
   static checkField() {
     const productsCart = document.querySelector('.cart-product__items');
-    if (!productsCart?.children.length) {
+    const span = productsCart?.querySelector('.no-product');
+
+    if (!productsCart!.children.length) {
       const textNoProduct = document.createElement('span');
       textNoProduct.classList.add('no-product');
       textNoProduct.textContent = 'Нет товаров';
       productsCart!.innerHTML = '';
       productsCart!.insertAdjacentElement('beforeend', textNoProduct);
+    } else if (span) {
+      span!.textContent = 'Нет товаров';
     }
   }
 
@@ -35,22 +40,28 @@ export default class ModalCartInner {
     const currentEl = <HTMLElement>e.target;
     const modalCart = <HTMLElement>document.querySelector('.modal-cart');
     const wrapper = <HTMLElement>document.querySelector('.modal');
-    if (currentEl.classList.contains('modal') || currentEl.classList.contains('cart-total__btn')) {
+    if (currentEl.classList.contains('modal')) {
       wrapper.dataset.active = 'false';
       modalCart.dataset.active = 'false';
-      if (!currentEl.classList.contains('cart-total__btn')) {
-        document.body.dataset.hidden = 'false';
-      }
+      document.body.dataset.hidden = 'false';
     } else if (currentEl.closest('.cart-product__delete')) {
       this.deleteProduct(currentEl);
       this.checkField();
     } else if (currentEl.closest('.cart-product__item')) {
       const productInCart = <HTMLElement>currentEl.closest('.cart-product__item');
       const productId = productInCart.getAttribute('data-id');
-      const currentProduct = <ElementProduct>products?.find((product) => product.id.toString() === productId);
+      const currentProduct = <ElementProduct>products?.find((product) => product._id.toString() === productId);
       modalCart.setAttribute('data-active', 'false');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const productModal = new ModalProduct(currentProduct);
+    } else if (currentEl.classList.contains('cart-total__btn')) {
+      const noProduct = <HTMLElement>document.querySelector('.no-product');
+      if (noProduct) {
+        noProduct.textContent = 'Добавьте товар';
+      } else {
+        wrapper.dataset.active = 'false';
+        modalCart.dataset.active = 'false';
+      }
     }
   }
 

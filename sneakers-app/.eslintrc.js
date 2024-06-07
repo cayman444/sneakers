@@ -21,6 +21,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     'prefer-destructuring': 'off',
     'no-magic-numbers': 'off',
+    'no-underscore-dangle': 'off',
     '@typescript-eslint/no-explicit-any': 'error',
     'consistent-return': 'off',
     'max-lines-per-function': ['error', { max: 40, skipBlankLines: true, skipComments: true }],

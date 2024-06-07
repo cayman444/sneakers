@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { ElementProduct } from '../util/interface';
 
 export default class ModalCartRender {
@@ -22,7 +23,7 @@ export default class ModalCartRender {
 
   static createModalCartItem(product: ElementProduct) {
     return `
-    <div class="cart-product__item" data-id="${product.id}">
+    <div class="cart-product__item" data-id="${product._id}">
       <div class="cart-product__img">
         <img src="${product.mainImage}" alt="">
       </div>

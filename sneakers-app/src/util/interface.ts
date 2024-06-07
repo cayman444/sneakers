@@ -10,14 +10,15 @@ interface Chars {
   compound: string;
 }
 export interface ElementProduct {
-  id: number;
+  _id: string;
   title: string;
   price: string;
   mainImage: string;
   gallery: string[];
-  video: string;
-  sizes: number[];
+  video?: string;
+  sizes: [{ string: number }];
   description: string;
+  rating: number;
   chars: Chars;
 }
 

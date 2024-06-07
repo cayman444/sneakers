@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { ElementProduct } from '../util/interface';
 
 export default class ModalOrder {
@@ -9,7 +10,7 @@ export default class ModalOrder {
     let totalProducts = <string>localStorage.getItem('productInCart');
     totalProducts = JSON.parse(totalProducts).map((product: { [key: string]: string }) => product.id);
     const productsOrderToRend = products?.filter((product) => {
-      if (totalProducts.includes(product.id.toString())) {
+      if (totalProducts.includes(product._id.toString())) {
         return product;
       }
       return null;
@@ -25,7 +26,7 @@ export default class ModalOrder {
 
   static createModalOrderItem(product: ElementProduct) {
     return `
-    <div class="order-content__product" data-id="${product.id}">
+    <div class="order-content__product" data-id="${product._id}">
       <div class="cart-product__img">
         <img src="${product.mainImage}" alt="">
       </div>

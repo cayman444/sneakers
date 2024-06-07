@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import BrowserDetector from 'browser-dtector';
 import { ElementProduct, Options } from '../util/interface';
 import ModalProduct from './modal-product';
@@ -21,9 +22,8 @@ export default class Products {
 
   private async getProducts() {
     try {
-      const res = await fetch('./data/data.json');
+      const res = await fetch('http://localhost:3000/product/render');
       const data: ElementProduct[] = await res.json();
-
       this.renderProduct(data);
     } catch (err) {
       console.error(err);
@@ -67,7 +67,7 @@ export default class Products {
 
     container.addEventListener('click', (e) => this.transitionTo(e));
 
-    cart?.addEventListener('click', (e) => this.openCart(e));
+    cart?.addEventListener('click', () => this.openCart());
 
     orderBtn?.addEventListener('click', this.openOrder.bind(this));
 
@@ -78,16 +78,18 @@ export default class Products {
     modalCart?.addEventListener('click', (e) => ModalCartInner.checkClick(e, this.products));
   }
 
-  private openCart(e: Event) {
-    const currentEl = <HTMLElement>e.target;
-    const modalCartInner = <HTMLElement>currentEl.closest('.header__card')!.nextElementSibling;
+  private openCart() {
+    const modalCartInner = <HTMLElement>document.querySelector('.modal-cart');
     this.wrapperModal!.dataset.active = 'true';
     modalCartInner.dataset.active = 'true';
     document.body.dataset.hidden = 'true';
     ModalCartInner.renderTotal();
+    ModalCartInner.checkField();
   }
 
   private openOrder() {
+    const products = document.querySelector('.cart-product__items');
+    if (!products?.querySelector('.cart-product__item')) return;
     const modalOrder = <HTMLElement>document.querySelector('.modal-end');
     document.body.dataset.hidden = 'true';
     modalOrder.dataset.active = 'true';
@@ -97,13 +99,13 @@ export default class Products {
 
   private createProduct(product: ElementProduct) {
     return `
-      <div id="${product.id}" class="products-item__card item-card">
+      <div id="${product._id}" class="products-item__card item-card">
         <div class="item-card__img card-img">
           <div class="card-img__background">
             <div class="card-img__decor about-card">
               <img src="assets/show.svg" alt="">
             </div>
-            <div class="card-img__decor shop-cart ${this.checkProductInCart(product.id)}">
+            <div class="card-img__decor shop-cart ${this.checkProductInCart(Number(product._id))}">
               <img src="assets/card.svg" alt="">
             </div>
           </div>
@@ -130,8 +132,7 @@ export default class Products {
   private showMore(e: Event) {
     const currentBtn = <HTMLElement>e.target;
     this.products?.forEach((product, ind) => {
-      const element = document.getElementById(`${ind + 1}`);
-      if (element === null) {
+      if (ind >= 6) {
         this.container?.insertAdjacentHTML('beforeend', this.createProduct(product));
       }
     });
@@ -192,7 +193,7 @@ export default class Products {
       if (options.sizes.length === 0) {
         sizeOption = true;
       } else {
-        sizeOption = sizes.some((el) => options.sizes.includes(el));
+        sizeOption = sizes.some((el) => options.sizes.includes(+Object.keys(el)[0]));
       }
 
       if (priceOption && genderOption && sizeOption) {
@@ -252,7 +253,7 @@ export default class Products {
 
   private renderInModal(id: string, where: string) {
     if (id) {
-      const currentProduct = <ElementProduct>this.products?.find((product) => product.id.toString() === id);
+      const currentProduct = <ElementProduct>this.products?.find((product) => product._id.toString() === id);
       if (where === 'product') {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const modal = new ModalProduct(currentProduct);
@@ -283,18 +284,28 @@ export default class Products {
 
   private cartItems() {
     const productCart = localStorage.getItem('productInCart');
-    if (productCart) {
-      const totalProducts = this.products?.filter((product: ElementProduct) =>
-        Object.values(productCart).includes(product.id.toString())
-      );
+    if (!productCart) return;
+    const products = <ElementProduct[]>this.products;
 
-      const modalCartItems = document?.querySelector('.cart-product__items');
+    const totalProducts: ElementProduct[] = JSON.parse(productCart).reduce(
+      (acc: ElementProduct[], product: { key: string }) => {
+        const currentAcc = acc;
+        for (let i = 0; i < products!.length; i += 1) {
+          if (products[i]._id === Object.values(product)[0]) {
+            currentAcc.push(products[i]);
+          }
+        }
+        return currentAcc;
+      },
+      []
+    );
 
-      const total: string[] = [];
-      totalProducts?.forEach((product) => {
-        total.push(ModalCartRender.createModalCartItem(product));
-      });
-      modalCartItems?.insertAdjacentHTML('beforeend', total.join(''));
-    }
+    const modalCartItems = document?.querySelector('.cart-product__items');
+
+    const total: string[] = [];
+    totalProducts?.forEach((el) => {
+      total.push(ModalCartRender.createModalCartItem(el));
+    });
+    modalCartItems?.insertAdjacentHTML('beforeend', total.join(''));
   }
 }

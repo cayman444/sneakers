@@ -2,8 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-
-const authRouter = require('./authRouter');
+const authRouter = require('./routers/authRouter');
+const productRouter = require('./routers/productRouter');
 
 const app = express();
 dotenv.config();
@@ -15,12 +15,13 @@ const db = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.fvgkhsg.mongodb.net
 app.use(express.json());
 app.use(cors());
 app.use('/auth', authRouter);
+app.use('/product', productRouter);
 
 const start = async () => {
   try {
-    mongoose.connect(db);
+    await mongoose.connect(db);
     app.listen(PORT, () => {
-      console.log('server start');
+      console.log(`Server started on port: ${PORT}`);
     });
   } catch (e) {
     console.log(e);

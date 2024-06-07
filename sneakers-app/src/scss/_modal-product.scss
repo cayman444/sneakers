@@ -167,6 +167,9 @@
     gap: 5px;
   }
   &__label {
+    &.star-none svg path {
+      fill: var(--gray-color);
+    }
   }
   &__input {
     display: none;

@@ -39,11 +39,31 @@
     }
   }
 
+  &__interaction {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    &-profile {
+    }
+  }
+
+  &-profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    svg {
+      max-width: 100%;
+      vertical-align: top;
+    }
+  }
+
   &__card {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-right: 7px;
     cursor: pointer;
     transition: all 0.3s ease 0s;
     @media (any-hover: hover) {
