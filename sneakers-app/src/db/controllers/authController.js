@@ -10,13 +10,13 @@ class AuthController {
       if (!errors.isEmpty()) {
         return res.status(400).json({ message: 'Ошибка при регистрации', errors });
       }
-      const { username, password } = req.body;
-      const candidate = await User.findOne({ username });
+      const { username, email, password } = req.body;
+      const candidate = await User.findOne({ email });
       if (candidate) {
         return res.status(400).json({ message: 'Пользователь с таким именем уже существует' });
       }
       const hashPassword = bcrypt.hashSync(password, 5);
-      const user = new User({ username, password: hashPassword });
+      const user = new User({ username, email, password: hashPassword });
       user.save();
       res.json({ message: 'Пользователь создан' });
     } catch (e) {
@@ -27,10 +27,12 @@ class AuthController {
 
   async login(req, res) {
     try {
-      const { username, password } = req.body;
-      const user = await User.findOne({ username });
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
+      const userName = user.username;
+
       if (!user) {
-        return res.status(400).json({ message: `Пользователь ${username} не найден` });
+        return res.status(400).json({ message: `Пользователь не найден` });
       }
       const validPassword = bcrypt.compareSync(password, user.password);
       if (!validPassword) {
@@ -38,7 +40,7 @@ class AuthController {
       }
 
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30d' });
-      res.json({ token, message: 'Вход выполнен успешно' });
+      res.json({ userName, token, message: 'Вход выполнен успешно' });
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: 'Ошибка при входе' });
@@ -48,11 +50,12 @@ class AuthController {
   async getUser(req, res) {
     try {
       const user = await User.findById(req.userId);
+      const userName = user.username;
       if (!user) {
         return res.status(400).json({ message: `Ошибка с получением пользователя` });
       }
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30d' });
-      res.json({ token, message: 'Пользователь найден' });
+      res.json({ userName, token, message: 'Пользователь найден' });
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: 'Ошибка с получением пользователя' });

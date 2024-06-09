@@ -30,12 +30,7 @@
             </div>
           </div>
           <div class="header__interaction-profile header-profile">
-            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M28 14C28 21.732 21.732 28 14 28C6.26801 28 0 21.732 0 14C0 6.26801 6.26801 0 14 0C21.732 0 28 6.26801 28 14ZM18.6667 7.77778C18.6667 10.3551 16.5774 12.4444 14.0001 12.4444C11.4227 12.4444 9.33339 10.3551 9.33339 7.77778C9.33339 5.20045 11.4227 3.11111 14.0001 3.11111C16.5774 3.11111 18.6667 5.20045 18.6667 7.77778ZM19.4998 16.2781C20.9584 17.7367 21.7778 19.715 21.7778 21.7778H14L6.22225 21.7778C6.22225 19.715 7.0417 17.7367 8.50031 16.2781C9.95893 14.8194 11.9372 14 14 14C16.0628 14 18.0411 14.8194 19.4998 16.2781Z"
-                fill="white" />
-            </svg>
-
+            <div></div>
           </div>
         </div>
         <div class="modal__content modal-cart" data-active="false">
@@ -318,9 +313,7 @@
             </div>
             <div class="order-content__about">
               <div class="order-content__compound">Состав заказа</div>
-              <div class="order-content__products">
-
-              </div>
+              <div class="order-content__products"></div>
             </div>
           </div>
         </div>
@@ -334,6 +327,48 @@
             <button type="submit" class="oreder-form__button button">Оформить заказ</button>
           </form>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal modal-authorization modal-login">
+    <div class="modal__content modal-authorization__inner  modal-login__inner">
+      <div class="modal-authorization__top modal-login__top">
+        <div class="modal-authorization__title modal-login__title">Вход</div>
+        <button class="modal-authorization__exit modal-login__exit"></button>
+      </div>
+      <form class="modal-authorization__form modal-login__form">
+        <input type="email" required="true" name="email"
+          class="modal-authorization__input modal-login__input modal-login__username" placeholder="Ваш E-mail">
+        <input type="password" required="true" name="password"
+          class="modal-authorization__input modal-login__input modal-login__password" placeholder="Ваш пароль">
+        <button type="submit" class="modal-authorization__button modal-login__button button">Войти</button>
+      </form>
+      <div class="modal-authorization__bottom modal-login__bottom">
+        <div class="modal-authorization__noacc modal-login__noacc">У вас нет аккаунта?</div>
+        <div class="modal-authorization__auth modal-login__register">Зарегистрироваться</div>
+      </div>
+    </div>
+    <div class="modal-login__loading"></div>
+  </div>
+  <div class="modal modal-authorization modal-register">
+    <div class="modal__content modal-authorization__inner  modal-register__inner">
+      <div class="modal-authorization__top modal-register__top">
+        <div class="modal-authorization__title modal-register__title">Регистрация</div>
+        <button class="modal-authorization__exit modal-register__exit"></button>
+      </div>
+      <form class="modal-authorization__form modal-register__form">
+        <input type="text" required="true" name="username" class="modal-authorization__input modal-register__input"
+          placeholder="Ваше имя">
+        <input type="email" required="true" name="email" class="modal-authorization__input modal-register__input"
+          placeholder="Ваш E-mail">
+        <input type="password" required="true" name="password" class="modal-authorization__input modal-register__input"
+          placeholder="Ваш пароль">
+        <button type="submit"
+          class="modal-authorization__button modal-register__button button">Зарегистрироваться</button>
+      </form>
+      <div class="modal-authorization__bottom modal-register__bottom">
+        <div class="modal-authorization__noacc modal-register__noacc">Уже есть аккаунт?</div>
+        <div class="modal-authorization__auth modal-register__login">Войти</div>
       </div>
     </div>
   </div>

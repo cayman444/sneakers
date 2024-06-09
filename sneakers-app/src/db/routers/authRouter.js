@@ -9,6 +9,7 @@ router.post(
   '/registration',
   [
     check('username', 'Имя пользователя не должно быть пустым').notEmpty(),
+    check('email', 'email не должен быть пустым').notEmpty(),
     check('password', 'Пароль не должен быть пустым').notEmpty(),
   ],
   controller.registration

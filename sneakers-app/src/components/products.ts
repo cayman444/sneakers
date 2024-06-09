@@ -5,6 +5,7 @@ import ModalProduct from './modal-product';
 import ModalCartRender from './modalCartRender';
 import ModalCartInner from './modalCartInner';
 import ModalOrder from './modal-order';
+import auth from './modal-auth';
 
 export default class Products {
   private products: ElementProduct[] | null = null;
@@ -30,9 +31,11 @@ export default class Products {
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   private renderProduct(products: ElementProduct[]) {
     this.products = products;
     this.cartItems();
+    this.auth();
     this.wrapperModal = <HTMLElement>document.querySelector('.modal');
     const wrapperOrder = document.querySelector('.modal-end');
     const cart = document.querySelector('.header__card');
@@ -76,6 +79,33 @@ export default class Products {
     this.wrapperModal.addEventListener('click', (e) => ModalCartInner.checkClick(e, this.products));
 
     modalCart?.addEventListener('click', (e) => ModalCartInner.checkClick(e, this.products));
+  }
+
+  private async auth() {
+    await auth.checkAuth();
+
+    const loginBtn = document.querySelector('.header-profile');
+    const wrapperLogin = <HTMLElement>document.querySelector('.modal-login');
+    const wrapperRegister = <HTMLElement>document.querySelector('.modal-register');
+    const loginForm = <HTMLFormElement>wrapperLogin.querySelector('.modal-login__form');
+    const registerForm = <HTMLFormElement>wrapperRegister.querySelector('.modal-register__form');
+
+    if (!loginBtn?.classList.contains('active')) {
+      loginBtn?.addEventListener('click', () => auth.openModalLogin(loginForm));
+    }
+
+    wrapperLogin?.addEventListener('click', (e) => auth.checkAuthClick(e, wrapperLogin));
+    loginForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      auth.checkUser(loginForm);
+    });
+
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      auth.registerUser(registerForm);
+    });
+
+    wrapperRegister?.addEventListener('click', (e) => auth.checkAuthClick(e, wrapperRegister));
   }
 
   private openCart() {
