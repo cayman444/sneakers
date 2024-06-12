@@ -30,9 +30,7 @@ function accordionOrderCheck(e: Event) {
   const orderProducts = <HTMLElement>parentOrderAcc.querySelector('.order-content__products');
   if (parentOrderAcc) {
     parentOrderAcc.classList.toggle('active');
-    orderProducts.style.maxHeight = parentOrderAcc.classList.contains('active')
-      ? `${orderProducts.scrollHeight}px`
-      : '0';
+    orderProducts.style.maxHeight = parentOrderAcc.classList.contains('active') ? `201px` : '0';
   }
 }
 

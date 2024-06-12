@@ -4,6 +4,8 @@ import { Thumbs } from 'swiper/modules';
 import 'swiper/css/bundle';
 import ElementCreator from '../util/element-creator';
 import { ElementProduct } from '../util/interface';
+import ModalOrder from './modal-order';
+import auth from './modal-auth';
 
 const cache = new Map();
 
@@ -33,28 +35,30 @@ export default class ModalProduct {
     document.body.dataset.hidden = 'true';
 
     this.currentModal = wrapper;
-    const sizes = this.currentModal.querySelector('.about-info__sizes');
 
     this.currentModal.addEventListener('click', (e) => this.clickField(e));
-    sizes?.addEventListener('click', this.clickSize);
   }
 
   private clickField(e: MouseEvent) {
     const el = <HTMLElement>e.target;
+    const modal = this.currentModal;
     if (el.classList.contains('modal')) {
-      const modal = this.currentModal;
       modal!.dataset.active = 'false';
       modal!.innerHTML = '';
       document.body.dataset.hidden = 'false';
-    }
-  }
-
-  private clickSize(e: Event) {
-    const el = <HTMLElement>e.target;
-    if (el.classList.contains('about-info__size')) {
+    } else if (el.classList.contains('about-info__size')) {
       const sizes = <HTMLCollection>el.parentElement?.children;
       Array.from(sizes).forEach((size) => size.classList.remove('active'));
       el.classList.toggle('active');
+    } else if (el.classList.contains('about-info__btn')) {
+      const token = localStorage.getItem('userToken');
+      modal!.dataset.active = 'false';
+      modal!.innerHTML = '';
+      if (token) {
+        ModalOrder.renderCurrentProduct(this.product);
+      } else {
+        auth.openModalLogin();
+      }
     }
   }
 

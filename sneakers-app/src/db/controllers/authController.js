@@ -17,8 +17,10 @@ class AuthController {
       }
       const hashPassword = bcrypt.hashSync(password, 5);
       const user = new User({ username, email, password: hashPassword });
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+
       user.save();
-      res.json({ message: 'Пользователь создан' });
+      res.json({ username, token, message: 'Пользователь создан' });
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: 'Ошибка при регистрации' });
@@ -29,11 +31,13 @@ class AuthController {
     try {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
-      const userName = user.username;
 
       if (!user) {
         return res.status(400).json({ message: `Пользователь не найден` });
       }
+
+      const userName = user.username;
+
       const validPassword = bcrypt.compareSync(password, user.password);
       if (!validPassword) {
         return res.status(400).json({ message: `Пароль не совпадает` });

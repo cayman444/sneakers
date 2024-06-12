@@ -1,0 +1,43 @@
+.modal-info {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 55px;
+  z-index: 1;
+  padding: 20px;
+  border-radius: 4px;
+  &[data-active='true'] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    color: var(--text-color);
+  }
+
+  &__orders {
+    cursor: pointer;
+    @media (any-hover: hover) {
+      &:hover {
+        color: var(--small-text-color);
+      }
+    }
+    transition: all 0.3s ease 0s;
+  }
+
+  &__exit {
+    cursor: pointer;
+    @media (any-hover: hover) {
+      &:hover {
+        color: var(--small-text-color);
+      }
+    }
+    transition: all 0.3s ease 0s;
+  }
+}

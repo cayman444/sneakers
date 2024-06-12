@@ -4,6 +4,8 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const authRouter = require('./routers/authRouter');
 const productRouter = require('./routers/productRouter');
+const questionRouter = require('./routers/questionRouter');
+const orderRouter = require('./routers/orderRouter');
 
 const app = express();
 dotenv.config();
@@ -16,6 +18,8 @@ app.use(express.json());
 app.use(cors());
 app.use('/auth', authRouter);
 app.use('/product', productRouter);
+app.use('/question', questionRouter);
+app.use('/order', orderRouter);
 
 const start = async () => {
   try {

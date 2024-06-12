@@ -6,6 +6,7 @@ import ModalCartRender from './modalCartRender';
 import ModalCartInner from './modalCartInner';
 import ModalOrder from './modal-order';
 import auth from './modal-auth';
+import question from './question-send';
 
 export default class Products {
   private products: ElementProduct[] | null = null;
@@ -31,10 +32,8 @@ export default class Products {
     }
   }
 
-  // eslint-disable-next-line max-lines-per-function
   private renderProduct(products: ElementProduct[]) {
     this.products = products;
-    this.cartItems();
     this.auth();
     this.wrapperModal = <HTMLElement>document.querySelector('.modal');
     const wrapperOrder = document.querySelector('.modal-end');
@@ -47,12 +46,15 @@ export default class Products {
     const filterSizes = filterItem.querySelector('.filter-item__table');
     const button = document.querySelector('.products-item__btn');
     const orderBtn = document.querySelector('.cart-total__btn');
+    const questionForm = <HTMLFormElement>document.querySelector('.social-form');
 
     // eslint-disable-next-line no-magic-numbers
     products.slice(0, 6).forEach((product) => {
       const currentProduct = this.createProduct(product);
       container?.insertAdjacentHTML('beforeend', currentProduct);
     });
+
+    this.cartItems();
 
     this.filterItem = filterItem;
     this.container = container;
@@ -79,36 +81,68 @@ export default class Products {
     this.wrapperModal.addEventListener('click', (e) => ModalCartInner.checkClick(e, this.products));
 
     modalCart?.addEventListener('click', (e) => ModalCartInner.checkClick(e, this.products));
+
+    questionForm?.addEventListener('submit', (e) => question.questionSend(e));
+  }
+
+  private userProfile(userProfile: HTMLElement) {
+    const currentUser = userProfile;
+
+    if (currentUser.getAttribute('data-active') === 'false') {
+      currentUser.dataset.active = 'true';
+    } else {
+      currentUser.dataset.active = 'false';
+    }
   }
 
   private async auth() {
     await auth.checkAuth();
 
-    const loginBtn = document.querySelector('.header-profile');
+    const loginBtn = <HTMLElement>document.querySelector('.header-profile');
+    const userInfo = <HTMLElement>document.querySelector('.modal-info');
     const wrapperLogin = <HTMLElement>document.querySelector('.modal-login');
     const wrapperRegister = <HTMLElement>document.querySelector('.modal-register');
     const loginForm = <HTMLFormElement>wrapperLogin.querySelector('.modal-login__form');
     const registerForm = <HTMLFormElement>wrapperRegister.querySelector('.modal-register__form');
 
-    if (!loginBtn?.classList.contains('active')) {
-      loginBtn?.addEventListener('click', () => auth.openModalLogin(loginForm));
-    }
+    loginBtn?.addEventListener('click', () => {
+      if (!loginBtn?.classList.contains('active')) {
+        auth.openModalLogin();
+      } else {
+        this.userProfile(userInfo);
+      }
+    });
 
     wrapperLogin?.addEventListener('click', (e) => auth.checkAuthClick(e, wrapperLogin));
     loginForm?.addEventListener('submit', (e) => {
       e.preventDefault();
-      auth.checkUser(loginForm);
+      auth.loginUser(loginForm);
     });
 
+    wrapperRegister?.addEventListener('click', (e) => auth.checkAuthClick(e, wrapperRegister));
     registerForm.addEventListener('submit', (e) => {
       e.preventDefault();
       auth.registerUser(registerForm);
     });
 
-    wrapperRegister?.addEventListener('click', (e) => auth.checkAuthClick(e, wrapperRegister));
+    document.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const target = <HTMLElement>e.target;
+      if (!target.closest('.modal-info') && !target.closest('.header-profile')) {
+        userInfo.dataset.active = 'false';
+      } else if (target.classList.contains('modal-info__orders')) {
+        console.log('сделать');
+      } else if (target.classList.contains('modal-info__exit')) {
+        auth.logout();
+      }
+    });
   }
 
   private openCart() {
+    if (!localStorage.getItem('userToken')) {
+      return auth.openModalLogin();
+    }
+
     const modalCartInner = <HTMLElement>document.querySelector('.modal-cart');
     this.wrapperModal!.dataset.active = 'true';
     modalCartInner.dataset.active = 'true';
@@ -149,7 +183,6 @@ export default class Products {
     `;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private checkProductInCart(id: number): string {
     const productsInCar = localStorage.getItem('productInCart');
     if (productsInCar) {
@@ -276,8 +309,12 @@ export default class Products {
     } else if (el.closest('.about-card') || el.closest('.item-card__content')) {
       this.renderInModal(currentId || '', 'product');
     } else if (el.closest('.shop-cart') && !el.closest('.shop-cart')!.classList.contains('active')) {
-      el.closest('.shop-cart')?.classList.add('active');
-      this.renderInModal(currentId || '', 'cart');
+      if (localStorage.getItem('userToken')) {
+        el.closest('.shop-cart')?.classList.add('active');
+        this.renderInModal(currentId || '', 'cart');
+      } else {
+        auth.openModalLogin();
+      }
     }
   }
 
@@ -314,7 +351,11 @@ export default class Products {
 
   private cartItems() {
     const productCart = localStorage.getItem('productInCart');
+    const modalCartItems = document?.querySelector('.cart-product__items');
+    const productsCatalog = document.querySelector('.products-item__cards');
+
     if (!productCart) return;
+
     const products = <ElementProduct[]>this.products;
 
     const totalProducts: ElementProduct[] = JSON.parse(productCart).reduce(
@@ -330,12 +371,20 @@ export default class Products {
       []
     );
 
-    const modalCartItems = document?.querySelector('.cart-product__items');
-
     const total: string[] = [];
+    const productId: string[] = [];
+
     totalProducts?.forEach((el) => {
       total.push(ModalCartRender.createModalCartItem(el));
+      productId.push(el._id);
     });
     modalCartItems?.insertAdjacentHTML('beforeend', total.join(''));
+
+    Array.from(productsCatalog!.children).forEach((product) => {
+      if (productId.includes(product.id)) {
+        const shopCart = product.querySelector('.shop-cart');
+        shopCart?.classList.add('active');
+      }
+    });
   }
 }

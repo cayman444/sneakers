@@ -22,27 +22,17 @@ class Auth {
       if (res.ok) {
         const data = await res.json();
         const userName = data.userName;
-        this.userAuth(userName);
+
+        this.successLogin(token, userName);
       }
     } catch (e) {
       console.log(e);
     }
   }
 
-  userAuth(name: string) {
-    const loginBtn = document.querySelector('.header-profile');
-    const inputForm = <HTMLInputElement>document.querySelector('.social-form__input');
-    const loginBtnText = <HTMLElement>loginBtn?.querySelector('div');
-
-    loginBtnText.textContent = name[0].toUpperCase();
-    inputForm.value = name[0].toUpperCase() + name.slice(1);
-
-    loginBtn?.classList.add('active');
-  }
-
-  async checkUser(form: HTMLFormElement) {
+  async loginUser(form: HTMLFormElement) {
     const formData = new FormData(form);
-    const email = formData.get('email');
+    const email = <string>formData.get('email');
     const password = formData.get('password');
     const userObj = { email, password };
     const loading = document.querySelector('.modal-login__loading');
@@ -55,12 +45,18 @@ class Auth {
         },
         body: JSON.stringify(userObj),
       });
+
       loading?.classList.add('active');
 
       const data = await res.json();
+      const userName = data.userName;
+
       if (res.ok) {
         loading?.classList.remove('active');
+        this.wrapperLogin.dataset.active = 'false';
+        document.body.dataset.hidden = 'false';
         this.successLogin(data.token, data.userName);
+        this.fillField(userName, email);
       } else {
         loading?.classList.remove('active');
         this.validateLogin(form, data.message);
@@ -74,7 +70,7 @@ class Auth {
   async registerUser(form: HTMLFormElement) {
     const formData = new FormData(form);
     const username = formData.get('username');
-    const email = formData.get('email');
+    const email = <string>formData.get('email');
     const password = formData.get('password');
     const userObj = { username, email, password };
 
@@ -87,12 +83,27 @@ class Auth {
         body: JSON.stringify(userObj),
       });
 
+      const data = await res.json();
+
       if (res.ok) {
-        this.successRegister();
+        this.wrapperRegister.dataset.active = 'false';
+        document.body.dataset.hidden = 'false';
+        this.successLogin(data.token, data.username);
+        this.fillField(data.username, email);
       }
     } catch (e) {
       console.log(e);
     }
+  }
+
+  fillField(username: string, email: string) {
+    const usernameInput = <HTMLInputElement>document.querySelector('.order-form__input-name');
+    const emailInput = <HTMLInputElement>document.querySelector('.order-form__input-email');
+
+    console.log(username, email);
+
+    usernameInput.value = username;
+    emailInput.value = email;
   }
 
   validateLogin(form: HTMLFormElement, error: string) {
@@ -112,31 +123,43 @@ class Auth {
     }
   }
 
-  successRegister() {
-    this.wrapperRegister.dataset.active = 'false';
-    document.body.dataset.hidden = 'false';
-  }
-
   successLogin(token: string, username: string) {
     localStorage.setItem('userToken', token);
     const loginBtn = document.querySelector('.header-profile');
     const loginBtnText = <HTMLElement>loginBtn?.querySelector('div');
+
     loginBtnText.textContent = username[0].toUpperCase();
 
     loginBtn?.classList.add('active');
-
-    this.wrapperLogin.dataset.active = 'false';
-    document.body.dataset.hidden = 'false';
   }
 
-  openModalLogin(form: HTMLFormElement) {
-    const inputs = <NodeListOf<HTMLInputElement>>form.querySelectorAll('.modal-login__input');
+  logout() {
+    localStorage.clear();
+    const userInfo = <HTMLElement>document.querySelector('.modal-info');
+    const inputForm = <HTMLInputElement>document.querySelector('.social-form__input');
+    const loginBtn = document.querySelector('.header-profile');
+    const loginBtnText = <HTMLElement>loginBtn?.querySelector('div');
+    const countCart = document.querySelector('.header__card-decor');
+    const productInCart = document.querySelector('.cart-product__items');
+    const productCart = document.querySelectorAll('.shop-cart');
+    loginBtnText.textContent = '';
+    inputForm.value = '';
+    loginBtn?.classList.remove('active');
+    userInfo.dataset.active = 'false';
+    countCart!.textContent = '0';
+    productInCart!.innerHTML = '';
+
+    const inputs = document.querySelectorAll('input');
+
     inputs.forEach((input) => {
       const currentInput = input;
-      currentInput.dataset.error = 'false';
       currentInput.value = '';
     });
 
+    productCart.forEach((shopCart) => shopCart.classList.remove('active'));
+  }
+
+  openModalLogin() {
     document.body.dataset.hidden = 'true';
     this.wrapperLogin.dataset.active = 'true';
   }
