@@ -8,6 +8,7 @@
   z-index: 1;
   padding: 20px;
   border-radius: 4px;
+  box-shadow: 4px 8px 20px 0 rgba(0, 13, 84, 0.2);
   &[data-active='true'] {
     opacity: 1;
     visibility: visible;

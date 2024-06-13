@@ -34,6 +34,8 @@ export default class ModalOrder {
     const htmlProduct = this.createModalOrderItem(product);
     containerOrderProducts?.insertAdjacentHTML('beforeend', htmlProduct);
     this.infoAboutProduct(product);
+
+    localStorage.setItem('oneProduct', 'true');
   }
 
   static createModalOrderItem(product: ElementProduct) {

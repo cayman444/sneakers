@@ -1,3 +1,5 @@
+import CountProducts from './count-products';
+
 class Auth {
   wrapperLogin: HTMLElement;
 
@@ -21,9 +23,10 @@ class Auth {
 
       if (res.ok) {
         const data = await res.json();
-        const userName = data.userName;
+        const { username, email } = data;
 
-        this.successLogin(token, userName);
+        this.successLogin(token, username);
+        this.fillField(username, email);
       }
     } catch (e) {
       console.log(e);
@@ -57,6 +60,7 @@ class Auth {
         document.body.dataset.hidden = 'false';
         this.successLogin(data.token, data.userName);
         this.fillField(userName, email);
+        CountProducts.getCountProducts();
       } else {
         loading?.classList.remove('active');
         this.validateLogin(form, data.message);
@@ -99,10 +103,10 @@ class Auth {
   fillField(username: string, email: string) {
     const usernameInput = <HTMLInputElement>document.querySelector('.order-form__input-name');
     const emailInput = <HTMLInputElement>document.querySelector('.order-form__input-email');
-
-    console.log(username, email);
+    const questionInput = <HTMLInputElement>document.querySelector('.social-form__input');
 
     usernameInput.value = username;
+    questionInput.value = username;
     emailInput.value = email;
   }
 

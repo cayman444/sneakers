@@ -54,12 +54,15 @@ class AuthController {
   async getUser(req, res) {
     try {
       const user = await User.findById(req.userId);
-      const userName = user.username;
+
       if (!user) {
         return res.status(400).json({ message: `Ошибка с получением пользователя` });
       }
+
+      const { username, email } = user;
+
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30d' });
-      res.json({ userName, token, message: 'Пользователь найден' });
+      res.json({ username, email, token, message: 'Пользователь найден' });
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: 'Ошибка с получением пользователя' });
@@ -73,6 +76,39 @@ class AuthController {
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: 'Ошибка с получением пользователей' });
+    }
+  }
+
+  async updateCountProducts(req, res) {
+    try {
+      const user = await User.findById(req.userId);
+      const newProduct = req.body;
+
+      if (!user) {
+        return res.status(400).json({ message: `Ошибка с получением пользователя` });
+      }
+
+      await User.updateOne({ _id: user._id }, { $set: { productInCart: newProduct } });
+
+      res.status(200).json({ message: 'Товар успешно добавлен в корзину' });
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ message: 'Ошибка с добавлением товара' });
+    }
+  }
+
+  async getCountProducts(req, res) {
+    try {
+      const user = await User.findById(req.userId);
+
+      if (!user) {
+        return res.status(400).json({ message: `Ошибка с получением пользователя` });
+      }
+
+      res.status(200).json({ productInCart: user.productInCart, message: 'Товары найдены' });
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ message: 'Ошибка с получением товаров' });
     }
   }
 }

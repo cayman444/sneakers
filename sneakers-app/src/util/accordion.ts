@@ -1,5 +1,5 @@
 const accordion = document.querySelector('.question-accordion');
-const accordionOrder = document.querySelector('.order-content__about');
+const accordionOrder = document.querySelectorAll('.order-content__about');
 
 function accordionToggle(e: Event) {
   const target = <HTMLElement>e.target;
@@ -37,4 +37,4 @@ function accordionOrderCheck(e: Event) {
 document.addEventListener('DOMContentLoaded', checkActive);
 accordion?.addEventListener('click', accordionToggle);
 
-accordionOrder?.addEventListener('click', accordionOrderCheck);
+accordionOrder.forEach((order) => order.addEventListener('click', accordionOrderCheck));

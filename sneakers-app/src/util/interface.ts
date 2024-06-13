@@ -28,3 +28,10 @@ export interface Options {
   gender: string[];
   sizes: number[];
 }
+
+export interface OrderInterface {
+  date: string;
+  orderId: string;
+  orderProducts: [{ productId: string; productName: string; productPrice: string }];
+  totalSum: string;
+}

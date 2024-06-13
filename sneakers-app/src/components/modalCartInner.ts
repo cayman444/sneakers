@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { ElementProduct } from '../util/interface';
+import CountProducts from './count-products';
 import ModalProduct from './modal-product';
 
 export default class ModalCartInner {
@@ -41,6 +42,7 @@ export default class ModalCartInner {
     const modalCart = <HTMLElement>document.querySelector('.modal-cart');
     const wrapper = <HTMLElement>document.querySelector('.modal');
     if (currentEl.classList.contains('modal')) {
+      wrapper.innerHTML = '';
       wrapper.dataset.active = 'false';
       modalCart.dataset.active = 'false';
       document.body.dataset.hidden = 'false';
@@ -90,6 +92,7 @@ export default class ModalCartInner {
     const totalInCart = <string>localStorage.getItem('totalInCart');
     const currentTotalInCart = +totalInCart - 1;
     localStorage.setItem('totalInCart', currentTotalInCart.toString());
+    CountProducts.UpdateCountProducts(currentProducts);
 
     const counter = <HTMLElement>document.querySelector('.header__card-decor');
     counter.textContent = currentTotalInCart.toString();

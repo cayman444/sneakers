@@ -15,6 +15,8 @@ router.post(
   controller.registration
 );
 router.post('/login', controller.login);
+router.patch('/updateCountProducts', authMiddleware, controller.updateCountProducts);
+router.get('/countProducts', authMiddleware, controller.getCountProducts);
 router.get('/user', authMiddleware, controller.getUser);
 router.get('/users', authMiddleware, controller.getUsers);
 

@@ -7,6 +7,8 @@ import ModalCartInner from './modalCartInner';
 import ModalOrder from './modal-order';
 import auth from './modal-auth';
 import question from './question-send';
+import order from './order-send';
+import CountProducts from './count-products';
 
 export default class Products {
   private products: ElementProduct[] | null = null;
@@ -19,7 +21,6 @@ export default class Products {
 
   constructor() {
     this.getProducts();
-    this.cartCounter();
   }
 
   private async getProducts() {
@@ -47,6 +48,7 @@ export default class Products {
     const button = document.querySelector('.products-item__btn');
     const orderBtn = document.querySelector('.cart-total__btn');
     const questionForm = <HTMLFormElement>document.querySelector('.social-form');
+    const orderForm = <HTMLFormElement>document.querySelector('.order-form');
 
     // eslint-disable-next-line no-magic-numbers
     products.slice(0, 6).forEach((product) => {
@@ -54,7 +56,8 @@ export default class Products {
       container?.insertAdjacentHTML('beforeend', currentProduct);
     });
 
-    this.cartItems();
+    // eslint-disable-next-line no-new
+    new CountProducts(products);
 
     this.filterItem = filterItem;
     this.container = container;
@@ -83,6 +86,8 @@ export default class Products {
     modalCart?.addEventListener('click', (e) => ModalCartInner.checkClick(e, this.products));
 
     questionForm?.addEventListener('submit', (e) => question.questionSend(e));
+
+    orderForm.addEventListener('submit', (e) => order.orderSend(e));
   }
 
   private userProfile(userProfile: HTMLElement) {
@@ -131,7 +136,10 @@ export default class Products {
       if (!target.closest('.modal-info') && !target.closest('.header-profile')) {
         userInfo.dataset.active = 'false';
       } else if (target.classList.contains('modal-info__orders')) {
-        console.log('сделать');
+        const parent = <HTMLElement>target.closest('.modal-info');
+        parent.dataset.active = 'false';
+        this.wrapperModal!.dataset.active = 'true';
+        order.getOrders();
       } else if (target.classList.contains('modal-info__exit')) {
         auth.logout();
       }
@@ -325,66 +333,68 @@ export default class Products {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const modal = new ModalProduct(currentProduct);
       } else if (where === 'cart') {
-        const productInCart = localStorage.getItem('productInCart');
-        let product;
-        if (productInCart) {
-          product = JSON.parse(productInCart);
-          product.push({ id });
+        const productsInCart = localStorage.getItem('productInCart');
+        let products;
+        if (productsInCart) {
+          products = JSON.parse(productsInCart);
+          products.push({ id });
         } else {
-          product = [{ id }];
+          products = [{ id }];
         }
 
-        localStorage.setItem('productInCart', JSON.stringify(product));
+        CountProducts.UpdateCountProducts(products);
+        localStorage.setItem('productInCart', JSON.stringify(products));
+
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const modal = new ModalCartRender(currentProduct);
       }
     }
   }
 
-  private cartCounter() {
-    const totalInCart = localStorage.getItem('totalInCart');
-    const cartCounter = <HTMLElement>document.querySelector('.header__card-decor');
-    if (totalInCart) {
-      cartCounter.textContent = totalInCart;
-    }
-  }
+  // private cartCounter() {
+  //   const totalInCart = localStorage.getItem('totalInCart');
+  //   const cartCounter = <HTMLElement>document.querySelector('.header__card-decor');
+  //   if (totalInCart) {
+  //     cartCounter.textContent = totalInCart;
+  //   }
+  // }
 
-  private cartItems() {
-    const productCart = localStorage.getItem('productInCart');
-    const modalCartItems = document?.querySelector('.cart-product__items');
-    const productsCatalog = document.querySelector('.products-item__cards');
+  // private cartItems() {
+  //   const productCart = localStorage.getItem('productInCart');
+  //   const modalCartItems = document?.querySelector('.cart-product__items');
+  //   const productsCatalog = document.querySelector('.products-item__cards');
 
-    if (!productCart) return;
+  //   if (!productCart) return;
 
-    const products = <ElementProduct[]>this.products;
+  //   const products = <ElementProduct[]>this.products;
 
-    const totalProducts: ElementProduct[] = JSON.parse(productCart).reduce(
-      (acc: ElementProduct[], product: { key: string }) => {
-        const currentAcc = acc;
-        for (let i = 0; i < products!.length; i += 1) {
-          if (products[i]._id === Object.values(product)[0]) {
-            currentAcc.push(products[i]);
-          }
-        }
-        return currentAcc;
-      },
-      []
-    );
+  //   const totalProducts: ElementProduct[] = JSON.parse(productCart).reduce(
+  //     (acc: ElementProduct[], product: { key: string }) => {
+  //       const currentAcc = acc;
+  //       for (let i = 0; i < products!.length; i += 1) {
+  //         if (products[i]._id === Object.values(product)[0]) {
+  //           currentAcc.push(products[i]);
+  //         }
+  //       }
+  //       return currentAcc;
+  //     },
+  //     []
+  //   );
 
-    const total: string[] = [];
-    const productId: string[] = [];
+  //   const total: string[] = [];
+  //   const productId: string[] = [];
 
-    totalProducts?.forEach((el) => {
-      total.push(ModalCartRender.createModalCartItem(el));
-      productId.push(el._id);
-    });
-    modalCartItems?.insertAdjacentHTML('beforeend', total.join(''));
+  //   totalProducts?.forEach((el) => {
+  //     total.push(ModalCartRender.createModalCartItem(el));
+  //     productId.push(el._id);
+  //   });
+  //   modalCartItems?.insertAdjacentHTML('beforeend', total.join(''));
 
-    Array.from(productsCatalog!.children).forEach((product) => {
-      if (productId.includes(product.id)) {
-        const shopCart = product.querySelector('.shop-cart');
-        shopCart?.classList.add('active');
-      }
-    });
-  }
+  //   Array.from(productsCatalog!.children).forEach((product) => {
+  //     if (productId.includes(product.id)) {
+  //       const shopCart = product.querySelector('.shop-cart');
+  //       shopCart?.classList.add('active');
+  //     }
+  //   });
+  // }
 }
