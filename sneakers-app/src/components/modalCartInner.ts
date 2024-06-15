@@ -46,6 +46,8 @@ export default class ModalCartInner {
       wrapper.dataset.active = 'false';
       modalCart.dataset.active = 'false';
       document.body.dataset.hidden = 'false';
+      currentEl.className = '';
+      currentEl.classList.add('modal');
     } else if (currentEl.closest('.cart-product__delete')) {
       this.deleteProduct(currentEl);
       this.checkField();

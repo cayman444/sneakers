@@ -39,6 +39,7 @@ class Auth {
     const password = formData.get('password');
     const userObj = { email, password };
     const loading = document.querySelector('.modal-login__loading');
+    loading?.classList.add('active');
 
     try {
       const res = await fetch('http://localhost:3000/auth/login', {
@@ -49,25 +50,22 @@ class Auth {
         body: JSON.stringify(userObj),
       });
 
-      loading?.classList.add('active');
-
       const data = await res.json();
       const userName = data.userName;
 
       if (res.ok) {
-        loading?.classList.remove('active');
         this.wrapperLogin.dataset.active = 'false';
         document.body.dataset.hidden = 'false';
         this.successLogin(data.token, data.userName);
         this.fillField(userName, email);
         CountProducts.getCountProducts();
       } else {
-        loading?.classList.remove('active');
         this.validateLogin(form, data.message);
       }
     } catch (e) {
-      loading?.classList.remove('active');
       console.log(e);
+    } finally {
+      loading?.classList.remove('active');
     }
   }
 
@@ -94,6 +92,8 @@ class Auth {
         document.body.dataset.hidden = 'false';
         this.successLogin(data.token, data.username);
         this.fillField(data.username, email);
+      } else {
+        this.validateRegister(form, data.message);
       }
     } catch (e) {
       console.log(e);
@@ -124,6 +124,17 @@ class Auth {
       username.dataset.error = 'true';
     } else {
       username.dataset.error = 'false';
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  validateRegister(form: HTMLFormElement, error: string) {
+    const email = <HTMLInputElement>form.querySelector('.modal-register-email');
+
+    if (error === 'Пользователь с такой почтой уже существует') {
+      email.dataset.error = 'true';
+    } else {
+      email.dataset.error = 'false';
     }
   }
 

@@ -139,7 +139,7 @@ export default class Products {
         const parent = <HTMLElement>target.closest('.modal-info');
         parent.dataset.active = 'false';
         this.wrapperModal!.dataset.active = 'true';
-        order.getOrders();
+        order.getOrders(this.products);
       } else if (target.classList.contains('modal-info__exit')) {
         auth.logout();
       }

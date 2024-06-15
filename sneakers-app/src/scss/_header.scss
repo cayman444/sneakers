@@ -12,9 +12,15 @@
   &__logo {
     font-size: 30px;
     font-weight: 700;
+    @media (max-width: 440px) {
+      font-size: 18px;
+    }
   }
 
   &__nav {
+    @media (max-width: 968px) {
+      display: none;
+    }
   }
 
   &__list {
@@ -43,6 +49,9 @@
     display: flex;
     align-items: center;
     gap: 25px;
+    @media (max-width: 440px) {
+      gap: 15px;
+    }
     &-profile {
     }
   }
@@ -90,6 +99,9 @@
     &-name {
       font-weight: 300;
       font-size: 14px;
+      @media (max-width: 440px) {
+        font-size: 12px;
+      }
     }
 
     &-img {

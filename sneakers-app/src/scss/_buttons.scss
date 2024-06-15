@@ -39,4 +39,8 @@
       background: #31343c;
     }
   }
+  @media (max-width: 992px) {
+    align-self: center;
+    padding: 0 77px;
+  }
 }

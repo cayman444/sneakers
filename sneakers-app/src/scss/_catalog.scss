@@ -11,6 +11,9 @@
     display: grid;
     grid-template-columns: 280px 1fr;
     gap: 20px;
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   &__item {
@@ -147,6 +150,10 @@
 .item-checkbox {
   display: flex;
   justify-content: space-between;
+  @media (max-width: 992px) {
+    justify-content: unset;
+    gap: 20px;
+  }
   &__label {
     display: flex;
     align-items: center;

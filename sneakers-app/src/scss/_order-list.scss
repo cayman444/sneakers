@@ -1,6 +1,9 @@
 .order-list {
   background-color: #fff;
   padding: 40px;
+  @media (max-width: 420px) {
+    padding: 20px;
+  }
   &__inner {
     display: flex;
     flex-direction: column;
@@ -21,48 +24,5 @@
     overflow: auto;
     max-height: 500px;
     gap: 20px;
-  }
-}
-.modal-order {
-  &__content {
-  }
-}
-.order-content {
-  &__inner {
-  }
-
-  &__top {
-  }
-
-  &__total {
-  }
-
-  &__sum {
-  }
-
-  &__about {
-  }
-
-  &__compound {
-  }
-
-  &__products {
-  }
-
-  &__product {
-  }
-}
-
-.cart-product {
-  &__img {
-  }
-
-  &__info {
-  }
-
-  &__title {
-  }
-
-  &__price {
   }
 }

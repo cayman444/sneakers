@@ -5,9 +5,20 @@
     grid-template-columns: 380px 1fr;
     gap: 60px;
     align-items: end;
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   &__item {
+    &:last-child {
+      @media (max-width: 1270px) {
+        align-self: center;
+      }
+      @media (max-width: 992px) {
+        order: -1;
+      }
+    }
   }
 
   &__item-form {

@@ -1,8 +1,11 @@
 import CountProducts from './count-products';
-
-import { OrderInterface } from '../util/interface';
+import { ElementProduct, OrderInterface } from '../util/interface';
+import ModalOrder from './modal-order';
+import clickOrder from '../util/accordion';
 
 class Order {
+  products: ElementProduct[] | null = null;
+
   wrapperOrder = <HTMLElement>document.querySelector('.modal-end');
 
   async orderSend(e: SubmitEvent) {
@@ -66,8 +69,9 @@ class Order {
     location.reload();
   }
 
-  async getOrders() {
+  async getOrders(products: ElementProduct[] | null) {
     const token = localStorage.getItem('userToken');
+    this.products = products;
     try {
       const res = await fetch('http://localhost:3000/order/get', {
         headers: {
@@ -78,6 +82,7 @@ class Order {
       if (res.ok) {
         const data = await res.json();
         this.markingWrapperModal(data);
+        clickOrder();
       }
     } catch (e) {
       console.log(e);
@@ -87,6 +92,7 @@ class Order {
   markingWrapperModal(orders: OrderInterface[]) {
     document.body.dataset.hidden = 'true';
     const modalWrapper = document.querySelector('.modal');
+    modalWrapper?.classList.add('modal-open__orders');
     modalWrapper?.insertAdjacentHTML(
       'beforeend',
       `
@@ -115,11 +121,11 @@ class Order {
             <div class="order-content__total">Номер заказа: <span>${order.orderId}</span></div>
             <div class="order-content__total">дата заказа: <span>${order.date}</span></div>
             <div class="order-content__total">Товаров в заказе: <span>${order.orderProducts.length} шт</span></div>
-            <div class="order-content__sum">Общая сумма заказа: <span>${order.totalSum}</span></div>
+            <div class="order-content__total">Общая сумма заказа: <span>${order.totalSum}</span></div>
           </div>
           <div class="order-content__about">
             <div class="order-content__compound">Состав заказа</div>
-            <div class="order-content__products" style="max-height: 201px;">
+            <div class="order-content__products">
               ${this.createModalOrderItem(order.orderProducts)}
             </div>
           </div>
@@ -129,8 +135,18 @@ class Order {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  createModalOrderItem(orderProducts: object[]) {
-    // console.log(orderProducts);
+  createModalOrderItem(orderProducts: { [key: string]: string }[]) {
+    const totalProducts = orderProducts.map((product: { [key: string]: string }) => product.productId);
+    const productsOrderToRend = this.products?.filter((product) => {
+      if (totalProducts.includes(product._id.toString())) {
+        return product;
+      }
+      return null;
+    });
+
+    const htmlProducts = productsOrderToRend?.map((product) => ModalOrder.createModalOrderItem(product));
+
+    return htmlProducts?.join(' ');
   }
 }
 

@@ -1,5 +1,4 @@
 const accordion = document.querySelector('.question-accordion');
-const accordionOrder = document.querySelectorAll('.order-content__about');
 
 function accordionToggle(e: Event) {
   const target = <HTMLElement>e.target;
@@ -30,11 +29,15 @@ function accordionOrderCheck(e: Event) {
   const orderProducts = <HTMLElement>parentOrderAcc.querySelector('.order-content__products');
   if (parentOrderAcc) {
     parentOrderAcc.classList.toggle('active');
-    orderProducts.style.maxHeight = parentOrderAcc.classList.contains('active') ? `201px` : '0';
+    orderProducts.style.maxHeight = parentOrderAcc.classList.contains('active') ? `160px` : '0';
   }
 }
 
+export default function clickOrder() {
+  const accordionOrder = document.querySelectorAll('.order-content__about');
+  accordionOrder.forEach((order) => order.addEventListener('click', accordionOrderCheck));
+}
+clickOrder();
+
 document.addEventListener('DOMContentLoaded', checkActive);
 accordion?.addEventListener('click', accordionToggle);
-
-accordionOrder.forEach((order) => order.addEventListener('click', accordionOrderCheck));

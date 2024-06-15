@@ -186,7 +186,7 @@ export default class ModalProduct {
               </div>
               <div class="about-slider__info about-info">
                 <div class="about-info__top">
-                  <div class="about-info__code">Артикул: <span>879876</span></div>
+                  <div class="about-info__code">Артикул: <span>${this.product._id}</span></div>
                   <div class="about-info__stock">В наличии: <span>${this.totalStock()} шт</span></div>
                 </div>
                 <div class="about-info__main">

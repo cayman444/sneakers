@@ -17,12 +17,20 @@
     align-items: center;
     grid-template-columns: 445px 1fr;
     gap: 50px;
+
+    @media (max-width: 1250px) {
+      grid-template-columns: 1fr;
+      height: 400px;
+    }
   }
 
   &__item {
     &:last-child {
       justify-self: center;
       margin-left: 5px;
+      @media (max-width: 1250px) {
+        display: none;
+      }
     }
   }
 
